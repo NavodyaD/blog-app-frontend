@@ -1,0 +1,123 @@
+import axios from 'axios';
+import React, { useState } from 'react';
+
+const CreatePost = () => {
+    const [postTitle, setPostTitle] = useState('');
+    const [postBody, setPostBody] = useState('');
+    const [coverImage, setCoverImage] = useState('');
+    const [postStatus, setPostStatus] = useState('');
+
+    const [draftSuccess, setDraftSuccess] = useState('');
+    const [draftError, setDraftError] = useState('');
+
+    const [submitSuccess, setSubmitSuccess] = useState('');
+    const [submitError, setSubmitError] = useState('');
+
+    const handleSaveDraft = async (e) => {
+        e.preventDefault();
+
+        try {
+            setPostStatus('draft');
+
+            const response = await axios.post('http://127.0.0.1:8000/api/posts', {
+                postTitle,
+                postBody,
+                coverImage,
+                postStatus,
+            });
+
+            console.log('BlogPost Saved as a Draft', response.data);
+            alert('Post Draft Saved');
+            setDraftSuccess('Post Draft Saved!');
+            setDraftError('');
+
+        } catch (err) {
+            console.log('Draft Save Failed', err.response?.data || err.message);
+            setDraftError(err.response?.data?.message || 'Draft Save Failed');
+            setDraftSuccess('');
+        }
+
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            setPostStatus('pending');
+            
+            const response = await axios.post('http://127.0.0.1:8000/api/posts', {
+                postTitle,
+                postBody,
+                coverImage,
+                postStatus,
+            });
+
+            console.log('BlogPost submitted for approval', response.data);
+            alert('Post submitteed for approval');
+            setSubmitSuccess('Post submit success');
+            setSubmitError('');
+
+        } catch (err) {
+            console.log('Draft submit Failed', err.response?.data || err.message);
+            setSubmitError(err.response?.data?.message || 'Draft Save Failed');
+            setSubmitSuccess('');
+        }
+    }
+
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-white-100 px-4">
+        <div className="w-full max-w-md bg-white p-8 rounded shadow">
+            <h2 className="text-2xl font-bold text-center mb-3 text-gray-800">Create a Blog Post</h2>
+            <h4 className="text-xl font-medium text-center mb-6 text-gray-500">Create a post!</h4>
+            
+            <div>
+                <label className="block text-gray-700 mb-1">Post Title</label>
+                <input
+                type="text"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                value={postTitle}
+                onChange={(e) => setPostTitle(e.target.value)}
+                required
+                />
+            </div>
+
+            <div>
+                <label className="block text-gray-700 mb-1">Post Body</label>
+                <input
+                type="text"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                value={postBody}
+                onChange={(e) => setPostBody(e.target.value)}
+                required
+                />
+            </div>
+
+            <div>
+                <lable className="block text-gray-700 mb-1">Cover Image</lable>
+                <input
+                type="text"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
+                value={coverImage}
+                onChange={(e) => setCoverImage(e.target.value)}
+                />
+            </div>
+
+            <button
+                className="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-700 transition duration-200"
+                onClick={handleSaveDraft}
+            >
+                Save Draft
+            </button>
+
+            <button
+                className="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-700 transition duration-200"
+                onClick={handleSubmit}
+            >
+                Submit For Approval
+            </button>
+        </div>
+        </div>
+    );
+}
+
+export default CreatePost;
