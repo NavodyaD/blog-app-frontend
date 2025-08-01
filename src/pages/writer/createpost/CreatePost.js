@@ -13,18 +13,26 @@ const CreatePost = () => {
     const [submitSuccess, setSubmitSuccess] = useState('');
     const [submitError, setSubmitError] = useState('');
 
+    const authToken = localStorage.getItem('token');
+
     const handleSaveDraft = async (e) => {
         e.preventDefault();
 
         try {
-            setPostStatus('draft');
 
-            const response = await axios.post('http://127.0.0.1:8000/api/posts', {
-                postTitle,
-                postBody,
-                coverImage,
-                postStatus,
-            });
+            const response = await axios.post('http://127.0.0.1:8000/api/posts',
+            {
+                post_title: postTitle,
+                post_body: postBody,
+                cover_image: coverImage,
+                post_status: 'draft',
+            },
+            {
+                headers: {
+                Authorization: `Bearer ${authToken}`,
+                },
+            }
+            );
 
             console.log('BlogPost Saved as a Draft', response.data);
             alert('Post Draft Saved');
@@ -43,14 +51,21 @@ const CreatePost = () => {
         e.preventDefault();
 
         try {
-            setPostStatus('pending');
             
-            const response = await axios.post('http://127.0.0.1:8000/api/posts', {
-                postTitle,
-                postBody,
-                coverImage,
-                postStatus,
-            });
+            const response = await axios.post('http://127.0.0.1:8000/api/posts',
+            {
+                post_title: postTitle,
+                post_body: postBody,
+                cover_image: coverImage,
+                post_status: 'pending',
+            },
+            {
+                headers: {
+                Authorization: `Bearer ${authToken}`,
+                },
+            }
+            );
+
 
             console.log('BlogPost submitted for approval', response.data);
             alert('Post submitteed for approval');
@@ -65,8 +80,8 @@ const CreatePost = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-white-100 px-4">
-        <div className="w-full max-w-md bg-white p-8 rounded shadow">
+        <div className="max-h-screen flex items-center justify-center bg-white-100 px-4">
+        <div className="w-full max-w-3/4 bg-white p-16 rounded shadow">
             <h2 className="text-2xl font-bold text-center mb-3 text-gray-800">Create a Blog Post</h2>
             <h4 className="text-xl font-medium text-center mb-6 text-gray-500">Create a post!</h4>
             
@@ -93,7 +108,7 @@ const CreatePost = () => {
             </div>
 
             <div>
-                <lable className="block text-gray-700 mb-1">Cover Image</lable>
+                <label className="block text-gray-700 mb-1">Cover Image</label>
                 <input
                 type="text"
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
@@ -103,14 +118,14 @@ const CreatePost = () => {
             </div>
 
             <button
-                className="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-700 transition duration-200"
+                className="w-full bg-blue-900 text-white py-2 my-4 rounded hover:bg-blue-700 transition duration-200"
                 onClick={handleSaveDraft}
             >
                 Save Draft
             </button>
 
             <button
-                className="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-700 transition duration-200"
+                className="w-full bg-blue-900 text-white py-2 my-4 rounded hover:bg-blue-700 transition duration-200"
                 onClick={handleSubmit}
             >
                 Submit For Approval
