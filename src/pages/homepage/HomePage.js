@@ -25,6 +25,13 @@ const HomePage = () => {
 
   return (
     <div className="p-6 md:p-12 bg-gray-50 min-h-screen">
+      <div className="max=w border px-16 py-6 mb-6 flex flex-row place-content-between">
+        <h4 className='text-3xl font-bold'> BlogApp </h4>
+        <button className='bg-blue-800 hover:bg-blue-700 font-semibold rounded text-white px-8 py-2'>
+          Login / Signup
+        </button>
+      </div>
+
       <div className="mb-10 text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">Explore Blog Posts</h1>
         <p className="text-lg text-gray-600">Read the latest insights, stories, and news</p>

@@ -61,7 +61,7 @@ const CreatePost = () => {
             },
             {
                 headers: {
-                Authorization: `Bearer ${authToken}`,
+                    Authorization: `Bearer ${authToken}`,
                 },
             }
             );
