@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const SignUp = () => {
     const [name, setName] = useState('');
@@ -8,6 +10,8 @@ const SignUp = () => {
     const [role, setRole] = useState('writer');
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,6 +23,17 @@ const SignUp = () => {
                 password,
                 role,
             });
+
+            const { token, role } = response.data;
+
+            localStorage.setItem('token', token);
+            localStorage.setItem('role', role);
+
+            if(role == 'writer') {
+                navigate('/writer-dashboard');
+            } else if (role == 'admin') {
+                navigate('/admin-dashboard');
+            }
 
             console.log('SignUp Successfull!', response.data);
             alert('SignUp Successfull!');
@@ -87,12 +102,12 @@ const SignUp = () => {
                 type="submit"
                 className="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-700 transition duration-200"
             >
-                Login
+                Create Account
             </button>
             </form>
             <p className="text-sm text-gray-600 mt-4">
             Already have an account?{' '}
-            <a href="/" className="text-blue-900 hover:underline font-medium"> Login </a>
+            <a href="/login" className="text-blue-900 hover:underline font-medium"> Login </a>
             </p>
 
         </div>

@@ -7,17 +7,18 @@ import AdminDashboard from './pages/admin/admindashboard/AdminDashboard';
 import CreatePost from "./pages/writer/createpost/CreatePost";
 import HomePage from "./pages/homepage/HomePage";
 import WriterEditPost from "./pages/writer/writereditpost/WriterEditPost";
+import PostDetailPage from "./pages/postdetailpage/PostDetailPage";
 
 const AppRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Login/>} />
+                <Route path="/login" element={<Login/>} />
                 <Route path="/signup" element={<SignUp/>} />
                 <Route path="/create-post" element={<CreatePost/>} />
-                <Route path="/home" element={<HomePage/>} />
+                <Route path="/" element={<HomePage/>} />
                 <Route path="/edit-post" element={<WriterEditPost />} />
-                
+                <Route path="/posts/:id" element={<PostDetailPage />} />
 
                 <Route
                     path="/writer-dashboard"
