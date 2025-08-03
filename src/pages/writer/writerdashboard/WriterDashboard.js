@@ -37,6 +37,10 @@ const WriterDashboard = () => {
     navigate('/edit-post', { state: { post } });
   };
 
+  const onPostClick = (id) => {
+    navigate(`/posts/${id}`);
+  }
+
   const onDeletePost = async (id) => {
     try {
         const response = await axios.delete(`http://127.0.0.1:8000/api/posts/${id}`, {
@@ -83,6 +87,7 @@ const WriterDashboard = () => {
               postState={post.post_status}
               onEdit={() => onEditPost(post)}
               onDelete={() => onDeletePost(post.id)}
+              onClick={() => onPostClick(post.id)}
             />
           ))}
         </div>

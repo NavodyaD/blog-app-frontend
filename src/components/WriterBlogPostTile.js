@@ -7,7 +7,8 @@ const WriterBlogPostTile = ({
   author, 
   postState, 
   onEdit, 
-  onDelete 
+  onDelete,
+  onClick,
 }) => {
 
   const getPreview = (text, wordLimit = 20) => {
@@ -16,7 +17,9 @@ const WriterBlogPostTile = ({
   };
 
   return (
-    <div className="bg-white rounded-xl w-[250px] shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1">
+    <div className="bg-white rounded-xl w-[250px] shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1"
+      onClick={onClick}
+    >
       <div className="relative w-full h-[180px]">
         <img
           src={image}
