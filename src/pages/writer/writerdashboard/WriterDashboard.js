@@ -41,6 +41,12 @@ const WriterDashboard = () => {
     navigate(`/posts/${id}`);
   }
 
+  const getImageUrl = (imagePath) => {
+  return imagePath
+    ? `http://127.0.0.1:8000/storage/${imagePath}`
+    : 'https://via.placeholder.com/300'; 
+  };
+
   const onDeletePost = async (id) => {
     try {
         const response = await axios.delete(`http://127.0.0.1:8000/api/posts/${id}`, {
@@ -80,7 +86,7 @@ const WriterDashboard = () => {
           {posts.map((post) => (
             <WriterBlogPostTile
               key={post.id}
-              image={post.cover_image}
+              image={getImageUrl(post.cover_image)}
               title={post.post_title}
               body={post.post_body}
               author={post.user?.name || 'Unknown'}

@@ -29,6 +29,13 @@ const HomePage = () => {
     navigate('/login');
   }
 
+  const getImageUrl = (imagePath) => {
+  return imagePath
+    ? `http://127.0.0.1:8000/storage/${imagePath}`
+    : 'https://via.placeholder.com/300'; 
+  };
+
+
   return (
     <div className="p-6 md:p-12 bg-gray-50 min-h-screen">
       <div className="max=w border px-16 py-6 mb-6 flex flex-row place-content-between">
@@ -47,7 +54,7 @@ const HomePage = () => {
         {posts.map((post) => (
           <BlogPostTile
             key={post.id}
-            image={post.cover_image}
+            image={getImageUrl(post.cover_image)}
             title={post.post_title}
             body={post.post_body}
             author={post.user?.name || 'Unknown Auther'}

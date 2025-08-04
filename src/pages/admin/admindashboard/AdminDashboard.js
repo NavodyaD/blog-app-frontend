@@ -24,6 +24,12 @@ const AdminDashboard = () => {
         fetchPosts();
     }, []);
 
+    const getImageUrl = (imagePath) => {
+    return imagePath
+        ? `http://127.0.0.1:8000/storage/${imagePath}`
+        : 'https://via.placeholder.com/300'; 
+    };
+
     const onPublishPost = async (id) => {
         try {
             const response = await axios.patch(`http://127.0.0.1:8000/api/posts/${id}/approve`, {
@@ -71,7 +77,7 @@ const AdminDashboard = () => {
                   {posts.map((post) => (
                     <AdminBlogPostTile
                       key={post.id}
-                      image={post.cover_image}
+                      image={getImageUrl(post.cover_image)}
                       title={post.post_title}
                       body={post.post_body}
                       author={post.user?.name || 'Unknown'}

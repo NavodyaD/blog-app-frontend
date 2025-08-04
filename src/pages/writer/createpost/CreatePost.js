@@ -51,25 +51,22 @@ const CreatePost = () => {
         e.preventDefault();
 
         try {
-            
-            const response = await axios.post('http://127.0.0.1:8000/api/posts',
-            {
-                post_title: postTitle,
-                post_body: postBody,
-                cover_image: coverImage,
-                post_status: 'pending',
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                },
-            }
-            );
+            const formData = new FormData();
+            formData.append('post_title', postTitle);
+            formData.append('post_body', postBody);
+            formData.append('cover_image', coverImage);
+            formData.append('post_status', 'pending');
 
+            const response = await axios.post('http://127.0.0.1:8000/api/posts', formData, {
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+                'Content-Type': 'multipart/form-data',
+            },
+            });
 
             console.log('BlogPost submitted for approval', response.data);
-            alert('Post submitteed for approval');
-            setSubmitSuccess('Post submit success');
+            alert('Post submitted for approval');
+            setSubmitSuccess('Post submitted successfully');
             setSubmitError('');
 
         } catch (err) {
@@ -77,7 +74,8 @@ const CreatePost = () => {
             setSubmitError(err.response?.data?.message || 'Draft Save Failed');
             setSubmitSuccess('');
         }
-    }
+    };
+
 
     return (
         <div className="max-h-screen flex items-center justify-center bg-white-100 px-4">
@@ -109,11 +107,12 @@ const CreatePost = () => {
 
             <div>
                 <label className="block text-gray-700 mb-1">Cover Image</label>
+                @csrf
                 <input
-                type="text"
+                type="file"
+                name='image'
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
-                value={coverImage}
-                onChange={(e) => setCoverImage(e.target.value)}
+                onChange={(e) => setCoverImage(e.target.files[0])}
                 />
             </div>
 

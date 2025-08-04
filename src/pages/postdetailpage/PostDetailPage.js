@@ -59,13 +59,19 @@ const PostDetailPage = () => {
     }
   }
 
+  const getImageUrl = (imagePath) => {
+  return imagePath
+    ? `http://127.0.0.1:8000/storage/${imagePath}`
+    : 'https://via.placeholder.com/300'; 
+  };
+
 
   if (!post) return <div className="p-6">Loading...</div>;
 
   return (
     <div className="p-14 w-5/6 mx-auto">
       <h1 className="text-4xl font-bold mb-8">{post.post_title}</h1>
-      <img src={post.cover_image} alt="cover" className="mb-4 rounded" />
+      <img src={getImageUrl(post.cover_image)} alt="cover" className="mb-4 rounded" />
       <p className="text-md text-gray-800 mb-4">{post.post_body}</p>
       <p className="text-2xl text-gray-500 mb-8">Author: {post.user?.name || 'Unknown'}</p>
       <div className='w-5/6 mb-4'>
