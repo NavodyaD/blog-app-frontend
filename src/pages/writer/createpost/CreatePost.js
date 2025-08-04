@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const CreatePost = () => {
     const [postTitle, setPostTitle] = useState('');
@@ -20,27 +21,27 @@ const CreatePost = () => {
 
         try {
 
-            const response = await axios.post('http://127.0.0.1:8000/api/posts',
-            {
-                post_title: postTitle,
-                post_body: postBody,
-                cover_image: coverImage,
-                post_status: 'draft',
-            },
-            {
-                headers: {
-                Authorization: `Bearer ${authToken}`,
-                },
-            }
-            );
+            const formData = new FormData();
+            formData.append('post_title', postTitle);
+            formData.append('post_body', postBody);
+            formData.append('cover_image', coverImage);
+            formData.append('post_status', 'draft');
 
-            console.log('BlogPost Saved as a Draft', response.data);
-            alert('Post Draft Saved');
-            setDraftSuccess('Post Draft Saved!');
-            setDraftError('');
+            const response = await axios.post('http://127.0.0.1:8000/api/posts', formData, {
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+                'Content-Type': 'multipart/form-data',
+            },
+            });
+
+            console.log('BlogPost saved as draft', response.data);
+            toast.success('Post saved as a draft');
+            setSubmitSuccess('Post submitted successfully');
+            setSubmitError('');
 
         } catch (err) {
             console.log('Draft Save Failed', err.response?.data || err.message);
+            toast.error('Draft save failed!');
             setDraftError(err.response?.data?.message || 'Draft Save Failed');
             setDraftSuccess('');
         }
@@ -65,12 +66,13 @@ const CreatePost = () => {
             });
 
             console.log('BlogPost submitted for approval', response.data);
-            alert('Post submitted for approval');
+            toast.success('Post submitted for approval!');
             setSubmitSuccess('Post submitted successfully');
             setSubmitError('');
 
         } catch (err) {
             console.log('Draft submit Failed', err.response?.data || err.message);
+            toast.error('Failed to submit post');
             setSubmitError(err.response?.data?.message || 'Draft Save Failed');
             setSubmitSuccess('');
         }
@@ -80,6 +82,12 @@ const CreatePost = () => {
     return (
         <div className="max-h-screen flex items-center justify-center bg-white-100 px-4">
         <div className="w-full max-w-3/4 bg-white p-16 rounded shadow">
+            <button
+                onClick={() => window.history.back()}
+                className="px-4 py-2 border border-gray-400 text-black rounded hover:bg-gray-200"
+            >
+                ← Back
+            </button>
             <h2 className="text-2xl font-bold text-center mb-3 text-gray-800">Create a Blog Post</h2>
             <h4 className="text-xl font-medium text-center mb-6 text-gray-500">Create a post!</h4>
             
@@ -107,7 +115,6 @@ const CreatePost = () => {
 
             <div>
                 <label className="block text-gray-700 mb-1">Cover Image</label>
-                @csrf
                 <input
                 type="file"
                 name='image'

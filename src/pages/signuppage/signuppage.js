@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const SignUp = () => {
@@ -36,12 +37,13 @@ const SignUp = () => {
             }
 
             console.log('SignUp Successfull!', response.data);
-            alert('SignUp Successfull!');
+            toast.success('Signup Succesful!');
             setSuccess('Signup Success');
             setError('');
         } catch (err) {
             console.log('Signup failed', err.response?.data || err.message);
-            setError(err.response?.data?.message || 'Login Failed');
+            toast.error('Signup Failed');
+            setError(err.response?.data?.message || 'Signup Failed');
             setSuccess('');
         }
     }

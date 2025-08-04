@@ -70,6 +70,12 @@ const PostDetailPage = () => {
 
   return (
     <div className="p-14 w-5/6 mx-auto">
+      <button
+        onClick={() => window.history.back()}
+        className="px-4 py-2 border border-gray-400 text-black rounded hover:bg-gray-100"
+      >
+        ← Back
+      </button>
       <h1 className="text-4xl font-bold mb-8">{post.post_title}</h1>
       <img src={getImageUrl(post.cover_image)} alt="cover" className="mb-4 rounded" />
       <p className="text-md text-gray-800 mb-4">{post.post_body}</p>
@@ -78,12 +84,12 @@ const PostDetailPage = () => {
         <p className='text-2xl font-bold text-balck-800 mb-4'>Comment your opinion</p>
 
         <textarea 
-        name="message" 
-        rows="5" cols="30"
-        placeholder="Enter your comment here..."
-        className='w-full px-2 py-2 mb-6 border border-black-800 rounded'
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
+          name="message" 
+          rows="5" cols="30"
+          placeholder="Enter your comment here..."
+          className='w-full px-2 py-2 mb-6 border border-black-800 rounded'
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
         ></textarea>
 
         <button onClick={handleCommentSubmit} className='px-6 py-2 text-white rounded bg-blue-800 hover:bg-blue-600'>

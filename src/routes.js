@@ -9,8 +9,13 @@ import HomePage from "./pages/homepage/HomePage";
 import WriterEditPost from "./pages/writer/writereditpost/WriterEditPost";
 import PostDetailPage from "./pages/postdetailpage/PostDetailPage";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const AppRoutes = () => {
     return (
+        <>
+        <ToastContainer position="top-center" autoClose={2000} />
         <Router>
             <Routes>
                 <Route path="/login" element={<Login/>} />
@@ -39,6 +44,7 @@ const AppRoutes = () => {
                 />
             </Routes>
         </Router>
+        </>
     )
 };
 

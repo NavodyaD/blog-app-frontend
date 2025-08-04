@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -33,14 +34,14 @@ const Login = () => {
             }
 
             console.log('Login success', response.data);
-            alert('Login successful!');
+            toast.success('Login successful!');
+
             setSuccess('Login Successful');
             setError('');
 
         } catch (err) {
             console.log('Login Failed', err.response?.data || err.message);
-            setError(err.response?.data?.message || 'Login Failed');
-            setSuccess('');
+            toast.error('Login failed!');
         }
     }
     

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const WriterEditPost = () => {
   const location = useLocation();
@@ -51,10 +52,11 @@ const WriterEditPost = () => {
       console.log('Post updated successfully', response.data);
       setUpdateSuccess('Post updated successfully!');
       setUpdateError('');
-      alert('Post updated successfully!');
+      toast.success('Post updated successful!');
       navigate('/writer-dashboard');
     } catch (err) {
       console.error('Post update failed', err.response?.data || err.message);
+      toast.error('Failed to update post!');
       setUpdateError(err.response?.data?.message || 'Post update failed.');
       setUpdateSuccess('');
     }
@@ -63,6 +65,12 @@ const WriterEditPost = () => {
   return (
     <div className="max-h-screen flex items-center justify-center bg-white-100 px-4">
       <div className="w-full max-w-3/4 bg-white p-16 rounded shadow">
+        <button
+          onClick={() => window.history.back()}
+          className="px-4 py-2 border border-gray-400 text-black rounded hover:bg-gray-100"
+        >
+          ← Back
+        </button>
         <h2 className="text-2xl font-bold text-center mb-3 text-gray-800">Edit Blog Post</h2>
         <h4 className="text-xl font-medium text-center mb-6 text-gray-500">Modify your post</h4>
 
