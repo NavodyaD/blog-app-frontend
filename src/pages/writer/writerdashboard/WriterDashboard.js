@@ -121,14 +121,15 @@ const WriterDashboard = () => {
   }
 
   return (
-    <div className="w-4/5 mx-auto px-4 py-8">
+    <>
+    <div className="max=w px-20 py-8 rounded-b-3xl shadow-md shadow-gray-200 flex flex-row place-content-between">
+        <h4 className='text-3xl font-bold'> BlogApp </h4>
+        <button className='bg-blue-800 hover:bg-blue-700 font-semibold rounded text-white px-8 py-2' onClick={onLogout}>
+            Log Out
+        </button>
+    </div>
 
-      <div className="max=w border border-gray-300 px-16 py-6 mb-6 flex flex-row place-content-between">
-          <h4 className='text-3xl font-bold'> BlogApp </h4>
-          <button className='bg-blue-800 hover:bg-blue-700 font-semibold rounded text-white px-8 py-2' onClick={onLogout}>
-              Log Out
-          </button>
-      </div>
+    <div className="w-4/5 mx-auto px-4 py-8">
 
       <h1 className="text-3xl font-bold mb-4 text-center">Welcome, Writer!</h1>
 
@@ -195,6 +196,7 @@ const WriterDashboard = () => {
       )}
 
     </div>
+    </>
   );
 };
 

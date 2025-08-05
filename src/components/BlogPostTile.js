@@ -9,19 +9,19 @@ const BlogPostTile = ({ image, title, body, author, onClick }) => {
 
   return (
     <div
-      className="bg-white rounded-xl w-[250px] shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1 cursor-pointer">
-      <div className="relative w-full h-[180px]" onClick={onClick}>
+      className="bg-white rounded-md w-[300px] border border-gray-300 shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1 cursor-pointer">
+      <div className="relative p-2 w-full h-[180px]" onClick={onClick}>
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover rounded-xl"
+          className="w-full h-full object-cover rounded-md"
         />
       </div>
 
       <div className="p-4 text-center w-full relative">
-        <p className="text-lg font-semibold text-gray-800 mb-2">{title}</p>
-        <p className="text-sm text-gray-600 mb-2">{getPreview(body)}</p>
-        <p className="text-sm text-gray-500 font-medium">By {author}</p>
+        <p className="text-lg text-left font-semibold text-gray-800 mb-2">{title}</p>
+        <p className="text-sm text-justify text-gray-600 mb-2">{getPreview(body)}</p>
+        <p className="text-sm text-left text-gray-800 font-medium">Author: {author}</p>
       </div>
     </div>
   );

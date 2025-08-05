@@ -118,10 +118,13 @@ const PostDetailPage = () => {
       >
         ← Back
       </button>
-      <h1 className="text-4xl font-bold mb-8">{post.post_title}</h1>
-      <img src={getImageUrl(post.cover_image)} alt="cover" className="mb-4 rounded" />
-      <p className="text-md text-gray-800 mb-4">{post.post_body}</p>
-      <p className="text-2xl text-gray-500 mb-8">Author: {post.user?.name || 'Unknown'}</p>
+
+      <h1 className="text-4xl font-bold my-8">{post.post_title}</h1>
+      
+      <img src={getImageUrl(post.cover_image)} alt="cover" className="mb-4 rounded rounded-3xl w-full h-auto max-h-96 object-cover" />
+      
+      <p className="text-lg text-gray-800 mb-4">{post.post_body}</p>
+      <p className="text-lg text-gray-500 mb-8">Author: {post.user?.name || 'Unknown Author'}</p>
 
       <button
         onClick={handleReaction}
@@ -132,7 +135,7 @@ const PostDetailPage = () => {
         {userLiked ? 'Liked' : 'Like'} ({likes})
       </button>
       
-      <div className='w-5/6 mb-4'>
+      <div className='w-5/6 my-4'>
         <p className='text-2xl font-bold text-balck-800 mb-4'>Comment your opinion</p>
 
         <textarea 

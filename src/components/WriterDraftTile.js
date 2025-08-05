@@ -15,7 +15,7 @@ const WriterDraftTile = ({
     };
 
     return (
-        <div className="bg-white rounded-xl w-[250px] pb-6 shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1">
+        <div className="bg-white rounded-xl w-[300px] pb-6 shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1">
         <div className="relative w-full h-[180px]" onClick={onClick}>
             <img
             src={image}
@@ -25,30 +25,30 @@ const WriterDraftTile = ({
         </div>
 
         <div className="p-4 text-center w-full relative">
-            <p className="text-lg font-semibold text-gray-800 mb-1">{title}</p>
-            <p className="text-sm text-blue-800 font-semibold mb-2">{postState}</p>
-            <p className="text-sm text-gray-600 mb-2">{getPreview(body)}</p>
-            <p className="text-sm text-gray-500 font-medium">By {author}</p>
+            <p className="text-lg text-left font-semibold text-gray-800 mb-1">{title}</p>
+            <p className="text-sm text-left text-blue-800 font-semibold mb-2">{postState}</p>
+            <p className="text-sm text-justify text-justify text-gray-600 mb-2">{getPreview(body)}</p>
+            <p className="text-sm text-left text-gray-800 font-medium">By {author}</p>
         </div>
 
         <div className="flex justify-between w-full px-4 pb-4 mt-auto gap-2">
             <button
             onClick={onEdit}
-            className="bg-blue-800 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 transition"
+            className="border border-blue-800 text-blue-800 text-sm px-4 py-1 hover:bg-blue-800 hover:text-white rounded transition"
             >
-            Edit
+            Edit Post
             </button>
             <button
             onClick={onDelete}
-            className="bg-red-700 text-white text-sm px-4 py-1 rounded hover:bg-red-600 transition"
+            className="text-red-800 border border-red-800 text-sm px-4 py-1 rounded hover:bg-red-800 hover:text-white transition"
             >
-            Delete
+            Delete Post
             </button>
         </div>
 
         <button
             onClick={onSave}
-            className="bg-white border border-gray-800 text-gray-900 text-sm px-4 py-1 rounded hover:bg-gray-200 transition"
+            className="w-4/5 bg-white border border-gray-800 text-gray-900 text-sm px-4 py-1 rounded hover:bg-gray-200 transition"
         >
             Submit For Approve
         </button>
