@@ -12,22 +12,64 @@ const PostDetailPage = () => {
   const [postComments, setPostComments] = useState([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
 
+  const [likes, setLikes] = useState(0);
+  const [userLiked, setUserLiked] = useState(false);
+
   const authToken = localStorage.getItem('token');
 
   useEffect(() => {
-    const fetchPost = async () => {
+    fetchPost();
+    getComments();
+    fetchReactionData();
+
+  }, [id, authToken]);
+
+  const fetchPost = async () => {
       try {
         const response = await axios.get(`http://127.0.1:8000/api/posts/${id}`);
         setPost(response.data);
       } catch (error) {
         console.error('Error fetching post:', error);
       }
+  };
+
+  const fetchReactionData = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/posts/reactions/${id}`, {
+          headers: { 
+            Authorization: `Bearer ${authToken}` 
+          },
+        });
+        setLikes(response.data.count);
+        setUserLiked(response.data.userLiked);
+      } catch (err) {
+        console.error('Error fetching reactions', err);
+      }
     };
 
-    fetchPost();
-    getComments();
+    const handleReaction = async () => {
+      try {
+        const response = await axios.post(
+          `http://127.0.0.1:8000/api/posts/react/${id}`, {},
+          { 
+            headers: { 
+              Authorization: `Bearer ${authToken}`,
+            } 
+          }
+        );
 
-  }, [id]);
+        if (response.data.status === 'liked') {
+          setLikes(prev => prev + 1);
+          setUserLiked(true);
+        } else {
+          setLikes(prev => prev - 1);
+          setUserLiked(false);
+        }
+      } catch (err) {
+        console.error('Failed to toggle like', err);
+      }
+    };
+
 
   const getComments = async () => {
     try {
@@ -80,6 +122,16 @@ const PostDetailPage = () => {
       <img src={getImageUrl(post.cover_image)} alt="cover" className="mb-4 rounded" />
       <p className="text-md text-gray-800 mb-4">{post.post_body}</p>
       <p className="text-2xl text-gray-500 mb-8">Author: {post.user?.name || 'Unknown'}</p>
+
+      <button
+        onClick={handleReaction}
+        className={`mt-2 px-3 py-1 rounded ${
+          userLiked ? 'bg-red-500 text-white' : 'bg-gray-200 text-black'
+        }`}
+      >
+        {userLiked ? 'Liked' : 'Like'} ({likes})
+      </button>
+      
       <div className='w-5/6 mb-4'>
         <p className='text-2xl font-bold text-balck-800 mb-4'>Comment your opinion</p>
 
