@@ -123,7 +123,11 @@ const PostDetailPage = () => {
       
       <img src={getImageUrl(post.cover_image)} alt="cover" className="mb-4 rounded rounded-3xl w-full h-auto max-h-96 object-cover" />
       
-      <p className="text-lg text-gray-800 mb-4">{post.post_body}</p>
+      <div
+        className="prose max-w-none text-lg text-gray-800 mb-4"
+        dangerouslySetInnerHTML={{ __html: post.post_body }}
+      ></div>
+      
       <p className="text-lg text-gray-500 mb-8">Author: {post.user?.name || 'Unknown Author'}</p>
 
       <button

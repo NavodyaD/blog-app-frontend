@@ -2,6 +2,9 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 const CreatePost = () => {
     const [postTitle, setPostTitle] = useState('');
     const [postBody, setPostBody] = useState('');
@@ -102,15 +105,18 @@ const CreatePost = () => {
                 />
             </div>
 
-            <div>
+            <div className="my-4">
                 <label className="block text-gray-700 mb-1">Post Body</label>
-                <input
-                type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200"
-                value={postBody}
-                onChange={(e) => setPostBody(e.target.value)}
-                required
-                />
+                <div className="border border-gray-300 rounded">
+                    <CKEditor
+                    editor={ClassicEditor}
+                    data={postBody}
+                    onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setPostBody(data);
+                    }}
+                    />
+                </div>
             </div>
 
             <div>

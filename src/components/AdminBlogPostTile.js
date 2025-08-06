@@ -29,7 +29,10 @@ const AdminBlogPostTile = ({
         <div className="p-4 text-center w-full relative">
             <p className="text-lg text-left font-semibold text-gray-800 mb-1">{title}</p>
             <p className="text-sm text-left text-blue-800 font-semibold mb-2">{postState}</p>
-            <p className="text-sm text-justify text-gray-600 mb-2">{getPreview(body)}</p>
+            <div
+            className="text-sm text-justify text-gray-600 mb-2"
+            dangerouslySetInnerHTML={{ __html: getPreview(body) }}
+            ></div>
             <p className="text-sm text-left text-gray-500 font-medium">By {author}</p>
         </div>
 

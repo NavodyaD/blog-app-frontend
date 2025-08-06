@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 const AdminDashboard = () => {
 
-    const [allPosts, setAllPosts] = useState([]);
+    const [pendingPosts, setPendingPosts] = useState([]);
     const [publishedPosts, setPublishedPosts] = useState([]);
     const [loading, setLoading] = useState();
 
@@ -16,14 +16,14 @@ const AdminDashboard = () => {
     const authToken = localStorage.getItem('token');
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchPendingPosts = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/all-posts', {
+                const response = await axios.get('http://127.0.0.1:8000/api/posts/pending', {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
                     }
                 });
-                setAllPosts(response.data);
+                setPendingPosts(response.data);
             } catch (error) {
                 console.error('Error fetching posts:', error);
             } finally {
@@ -32,17 +32,18 @@ const AdminDashboard = () => {
         };
 
         const fetchPublishedPosts = async () => {
-        try {
-            const response = await axios.get('http://127.0.0.1:8000/api/posts');
-            setPublishedPosts(response.data);
-        } catch (error) {
-            console.error('Error fetching posts:', error);
-        }
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/posts');
+                setPublishedPosts(response.data);
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+            }
         };
 
-        fetchPosts();
+        fetchPendingPosts();
         fetchPublishedPosts();
     }, []);
+   
 
     const getImageUrl = (imagePath) => {
     return imagePath
@@ -126,16 +127,16 @@ const AdminDashboard = () => {
 
               <h1 className="text-3xl font-bold mb-4 text-center">Welcome, Admin!</h1>
         
-              <h2 className='text-2xl font-semibold mt-12 mb-2'>Published BlogPosts</h2>
-              <p className='text-gray-500 font-semibold mb-12'>Published BlogPosts on BlogApp</p>
+              <h2 className='text-2xl font-semibold mt-12 mb-2'>BlogPosts Pending Approval</h2>
+              <p className='text-gray-500 font-semibold mb-12'>Approve & Publish Pending BlogPosts</p>
         
               {loading ? (
                 <p>Loading...</p>
-              ) : allPosts.length === 0 ? (
+              ) : pendingPosts.length === 0 ? (
                 <p className="text-gray-500">No posts to approve and publish</p>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-6">
-                  {allPosts.map((post) => (
+                  {pendingPosts.map((post) => (
                     <AdminBlogPostTile
                       key={post.id}
                       image={getImageUrl(post.cover_image)}
