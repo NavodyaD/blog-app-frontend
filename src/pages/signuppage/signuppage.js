@@ -25,14 +25,14 @@ const SignUp = () => {
                 role,
             });
 
-            const { token, role } = response.data;
+            const { token, role: userRole } = response.data;
 
             localStorage.setItem('token', token);
-            localStorage.setItem('role', role);
+            localStorage.setItem('role', userRole);
 
-            if(role == 'writer') {
+            if(role === 'writer') {
                 navigate('/writer-dashboard');
-            } else if (role == 'admin') {
+            } else if (role === 'admin') {
                 navigate('/admin-dashboard');
             }
 

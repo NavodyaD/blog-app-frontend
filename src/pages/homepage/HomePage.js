@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BlogPostTile from '../../components/BlogPostTile';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../components/Footer';
 
 
 const HomePage = () => {
@@ -29,6 +30,10 @@ const HomePage = () => {
     navigate('/login');
   }
 
+  const gotoSignup = () => {
+    navigate('/signup');
+  }
+
   const getImageUrl = (imagePath) => {
   return imagePath
     ? `http://127.0.0.1:8000/storage/${imagePath}`
@@ -40,9 +45,14 @@ const HomePage = () => {
     <>
     <div className="max=w border px-16 py-6 flex flex-row place-content-between">
       <h4 className='text-3xl font-bold'> BlogApp </h4>
-      <button className='bg-blue-800 hover:bg-blue-700 font-semibold rounded text-white px-8 py-2' onClick={gotoLogin}>
-        Login / Signup
-      </button>
+      <div className='flex flex-row space-x-6'>
+        <button className='bg-white border text-gray-800 border-gray-800 hover:bg-gray-800 hover:text-white font-semibold rounded px-8 py-2' onClick={gotoLogin}>
+          Login
+        </button>
+        <button className='bg-gray-800 hover:bg-gray-900 font-semibold rounded text-white px-8 py-2' onClick={gotoSignup}>
+          Signup
+        </button>
+      </div>
     </div>
       
     <div className="p-6 md:p-12 bg-gray-50 min-h-screen">
@@ -64,6 +74,8 @@ const HomePage = () => {
         ))}
       </div>
     </div>
+
+    <Footer />
     </>
   );
 };

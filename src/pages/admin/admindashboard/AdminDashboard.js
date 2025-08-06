@@ -4,6 +4,7 @@ import AdminBlogPostTile from '../../../components/AdminBlogPostTile';
 import BlogPostTile from '../../../components/BlogPostTile';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Footer from '../../../components/Footer';
 
 const AdminDashboard = () => {
 
@@ -55,13 +56,13 @@ const AdminDashboard = () => {
         try {
             const response = await axios.patch(
             `http://127.0.0.1:8000/api/posts/${id}/approve`,
-            {},
-            {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                },
-            }
-        );
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                }
+            );
 
             console.log("Post published successful!");
             toast.success('Post Published Successful!');
@@ -168,6 +169,8 @@ const AdminDashboard = () => {
                     ))}
                 </div>
             </div>
+
+            <Footer/>
         </>
     );
 }

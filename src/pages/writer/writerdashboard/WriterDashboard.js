@@ -4,6 +4,7 @@ import WriterBlogPostTile from '../../../components/WriterBlogPostTile';
 import WriterDraftTile from '../../../components/WriterDraftTile';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Footer from '../../../components/Footer';
 
 const WriterDashboard = () => {
   const [posts, setPosts] = useState([]);
@@ -106,23 +107,24 @@ const WriterDashboard = () => {
 
   const onSaveDraft = async (id) => {
     try {
-      const response = await axios.patch(`http://127.0.0.1:8000/api/posts/${id}/save`, {
+      const response = await axios.patch(`http://127.0.0.1:8000/api/posts/${id}/save`, {}, {
         headers: {
           Authorization: `Bearer ${authToken}`
         }
       });
 
       console.log("Post submitted successful!");
-      alert("Post submitted successful!");
+      toast.success('Post saved and sent for approval!');
 
     } catch (error) {
       console.log("Failed to publish post", error);
+      toast.error('Failed to send post for approval!');
     }
   }
 
   return (
     <>
-    <div className="max=w px-20 py-8 rounded-b-3xl shadow-md shadow-gray-200 flex flex-row place-content-between">
+    <div className="max=w px-20 py-8 rounded-b-3xl shadow-md shadow-gray-300 flex flex-row place-content-between">
         <h4 className='text-3xl font-bold'> BlogApp </h4>
         <button className='bg-blue-800 hover:bg-blue-700 font-semibold rounded text-white px-8 py-2' onClick={onLogout}>
             Log Out
@@ -142,7 +144,7 @@ const WriterDashboard = () => {
           onClick={onCreatePost}
           className="h-3/4 border border-black rounded text-black font-semibold hover:bg-gray-800 hover:text-white px-6 py-2 shadow"
         >
-          Create Blog
+          + Create Blog
         </button>
       </div>
 
@@ -154,7 +156,7 @@ const WriterDashboard = () => {
       ) : posts.length === 0 ? (
         <p className="text-gray-500">You have no created any blog posts yet.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {posts.map((post) => (
             <WriterBlogPostTile
               key={post.id}
@@ -177,7 +179,7 @@ const WriterDashboard = () => {
       {drafts.length === 0 ? (
         <p className="text-gray-500">You have not created drafts yet.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {drafts.map((post) => (
             <WriterDraftTile
               key={post.id}
@@ -196,6 +198,8 @@ const WriterDashboard = () => {
       )}
 
     </div>
+
+    <Footer />
     </>
   );
 };

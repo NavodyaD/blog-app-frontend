@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CommentTile from '../../components/CommentTile';
 import axios from 'axios';
+import Footer from '../../components/Footer';
 
 
 const PostDetailPage = () => {
@@ -111,6 +112,7 @@ const PostDetailPage = () => {
   if (!post) return <div className="p-6">Loading...</div>;
 
   return (
+    <>
     <div className="p-14 w-5/6 mx-auto">
       <button
         onClick={() => window.history.back()}
@@ -130,14 +132,21 @@ const PostDetailPage = () => {
       
       <p className="text-lg text-gray-500 mb-8">Author: {post.user?.name || 'Unknown Author'}</p>
 
-      <button
-        onClick={handleReaction}
-        className={`mt-2 px-3 py-1 rounded ${
-          userLiked ? 'bg-red-500 text-white' : 'bg-gray-200 text-black'
-        }`}
-      >
-        {userLiked ? 'Liked' : 'Like'} ({likes})
-      </button>
+      <hr className='border border-gray-200'/>
+
+      <div className='w-3/5 my-6 justify-between items-center flex flex-row'>
+        <p className='font-semibold text-lg'>If you're interested with the post, make a like reaction!</p>
+        <button
+          onClick={handleReaction}
+          className={`mt-2 px-10 py-4 font-semibold text-lg rounded rounded-lg ${
+            userLiked ? 'bg-red-500 text-white' : 'bg-white border border-gray-400 text-black'
+          }`}
+        >
+          {userLiked ? 'Liked' : 'Like'} ({likes})
+        </button>
+      </div>
+
+      <hr className='border border-gray-200'/>
       
       <div className='w-5/6 my-4'>
         <p className='text-2xl font-bold text-balck-800 mb-4'>Comment your opinion</p>
@@ -177,6 +186,9 @@ const PostDetailPage = () => {
         
       </div>
     </div>
+    
+    <Footer />
+    </>
   );
 };
 
