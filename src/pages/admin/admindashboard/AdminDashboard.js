@@ -64,8 +64,8 @@ const AdminDashboard = () => {
                 }
             );
 
-            console.log("Post published successful!");
             toast.success('Post Published Successful!');
+            console.log("Post published successful!");
             
         } catch (error) {
 
@@ -117,7 +117,7 @@ const AdminDashboard = () => {
 
     return (
         <>
-        <div className="max=w px-20 py-8 rounded-b-3xl shadow-md shadow-gray-200 flex flex-row place-content-between">
+        <div className="max=w px-18 py-8 rounded-b-3xl shadow-md shadow-gray-200 flex flex-row place-content-between">
             <h4 className='text-3xl font-bold'> BlogApp </h4>
             <button className='bg-blue-800 hover:bg-blue-700 font-semibold rounded text-white px-8 py-2' onClick={onLogout}>
             Log Out

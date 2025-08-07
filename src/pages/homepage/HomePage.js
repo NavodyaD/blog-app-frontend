@@ -55,13 +55,13 @@ const HomePage = () => {
       </div>
     </div>
       
-    <div className="p-6 md:p-12 bg-gray-50 min-h-screen">
+    <div className="py-6 px-24 bg-gray-50 justify-around min-h-screen">
       <div className="mb-10 text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">Explore Blog Posts</h1>
         <p className="text-lg text-gray-600">Read the latest insights, stories, and news</p>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-6">
+      <div className="flex flex-wrap justify-start gap-6">
         {posts.map((post) => (
           <BlogPostTile
             key={post.id}

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import CommentTile from '../../components/CommentTile';
 import axios from 'axios';
 import Footer from '../../components/Footer';
+import { toast } from 'react-toastify';
 
 
 const PostDetailPage = () => {
@@ -96,9 +97,11 @@ const PostDetailPage = () => {
       });
 
       console.log('Comment published successfully!', response.data);
+      toast.success('Comment published successfully!');
 
     } catch (error) {
       console.log('Comment publish failed', error.response?.data || error.message);
+      toast.error('Comment submit failed!');
     }
   }
 
