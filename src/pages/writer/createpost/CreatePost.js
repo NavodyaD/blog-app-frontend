@@ -9,7 +9,6 @@ const CreatePost = () => {
     const [postTitle, setPostTitle] = useState('');
     const [postBody, setPostBody] = useState('');
     const [coverImage, setCoverImage] = useState('');
-    const [postStatus, setPostStatus] = useState('');
 
     const [draftSuccess, setDraftSuccess] = useState('');
     const [draftError, setDraftError] = useState('');
@@ -42,9 +41,14 @@ const CreatePost = () => {
             setSubmitSuccess('Post submitted successfully');
             setSubmitError('');
 
+            setTimeout(() => {
+            window.history.back();
+            }, 500);
+
         } catch (err) {
+            const errorMessage = err.response?.data?.message || err.message || 'Draft Save Failed';
             console.log('Draft Save Failed', err.response?.data || err.message);
-            toast.error('Draft save failed!');
+            toast.error(`Draft save failed: ${errorMessage}`);
             setDraftError(err.response?.data?.message || 'Draft Save Failed');
             setDraftSuccess('');
         }
@@ -73,9 +77,15 @@ const CreatePost = () => {
             setSubmitSuccess('Post submitted successfully');
             setSubmitError('');
 
+            setTimeout(() => {
+            window.history.back();
+            }, 500);
+
         } catch (err) {
-            console.log('Draft submit Failed', err.response?.data || err.message);
-            toast.error('Failed to submit post');
+            const errorMessage = err.response?.data?.message || err.message || 'Draft Save Failed';
+
+            console.log('Draft Save Failed', err.response?.data || err.message);
+            toast.error(`Draft save failed: ${errorMessage}`);
             setSubmitError(err.response?.data?.message || 'Draft Save Failed');
             setSubmitSuccess('');
         }

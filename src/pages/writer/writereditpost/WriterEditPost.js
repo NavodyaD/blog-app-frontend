@@ -58,8 +58,9 @@ const WriterEditPost = () => {
       toast.success('Post updated successful!');
       navigate('/writer-dashboard');
     } catch (err) {
-      console.error('Post update failed', err.response?.data || err.message);
-      toast.error('Failed to update post!');
+      const errorMessage = err.response?.data?.message || err.message || 'Post Update Failed';
+      console.log('Post Update Failed', err.response?.data || err.message);
+      toast.error(`Post Update Failed: ${errorMessage}`);
       setUpdateError(err.response?.data?.message || 'Post update failed.');
       setUpdateSuccess('');
     }

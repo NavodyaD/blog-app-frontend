@@ -41,8 +41,9 @@ const SignUp = () => {
             setSuccess('Signup Success');
             setError('');
         } catch (err) {
-            console.log('Signup failed', err.response?.data || err.message);
-            toast.error('Signup Failed');
+            const errorMessage = err.response?.data?.message || err.message || 'Signup failed';
+            console.log('Signup Failed', err.response?.data || err.message);
+            toast.error(`Signup Failed: ${errorMessage}`);
             setError(err.response?.data?.message || 'Signup Failed');
             setSuccess('');
         }

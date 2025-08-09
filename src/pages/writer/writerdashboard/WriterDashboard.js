@@ -90,6 +90,9 @@ const WriterDashboard = () => {
     console.log('Post Deleted Successfully!');
     toast.success('Post Deleted Succesful!');
 
+    fetchOwnPosts();
+    fetchOwnDrafts();
+
     } catch (error) {
         console.error('Error fetching posts:', error);
         toast.error('Unable to delete post!');
@@ -109,7 +112,7 @@ const WriterDashboard = () => {
             toast.success('Logged out successfully!');
 
             setTimeout(() => {
-              window.location.href = '/login';
+              window.location.href = '/';
             }, 2000);
 
         } catch (error) {
@@ -127,6 +130,9 @@ const WriterDashboard = () => {
 
       console.log("Post submitted successful!");
       toast.success('Post saved and sent for approval!');
+
+      fetchOwnPosts();
+      fetchOwnDrafts();
 
     } catch (error) {
       console.log("Failed to publish post", error);
