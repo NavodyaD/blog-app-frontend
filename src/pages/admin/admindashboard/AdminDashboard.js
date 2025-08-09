@@ -17,39 +17,39 @@ const AdminDashboard = () => {
     const authToken = localStorage.getItem('token');
 
     useEffect(() => {
-        const fetchPendingPosts = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/posts/pending', {
-                    headers: {
-                        Authorization: `Bearer ${authToken}`,
-                    }
-                });
-                setPendingPosts(response.data);
-            } catch (error) {
-                console.error('Error fetching posts:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const fetchPublishedPosts = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/posts');
-                setPublishedPosts(response.data);
-            } catch (error) {
-                console.error('Error fetching posts:', error);
-            }
-        };
-
         fetchPendingPosts();
         fetchPublishedPosts();
     }, []);
+
+    const fetchPendingPosts = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/posts/pending', {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                }
+            });
+            setPendingPosts(response.data);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchPublishedPosts = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/posts');
+            setPublishedPosts(response.data);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    };
    
 
     const getImageUrl = (imagePath) => {
     return imagePath
         ? `http://127.0.0.1:8000/storage/${imagePath}`
-        : 'https://via.placeholder.com/300'; 
+        : ''; 
     };
 
     const onPublishPost = async (id) => {
@@ -66,11 +66,15 @@ const AdminDashboard = () => {
 
             toast.success('Post Published Successful!');
             console.log("Post published successful!");
-            
+
+            fetchPendingPosts();
+            fetchPublishedPosts();
+                
         } catch (error) {
 
-            console.log("Failed to publish post", error);
-            toast.error('Failed to publish post!');
+            const errorMessage = error.response?.data?.message || error.message || 'Post Approve Failed';
+            console.log('Post Approve Failed', error.response?.data || error.message);
+            toast.error(`Post Approve Failed: ${errorMessage}`);
 
         }
     }
@@ -85,8 +89,9 @@ const AdminDashboard = () => {
             console.log('Post deleted successful!');
             toast.success('Post Deleted Successful!');
         } catch (error) {
-            console.error('Unable to delete post', error);
-            toast.error('Unable to delete post!');
+            const errorMessage = error.response?.data?.message || error.message || 'Post Delete Failed';
+            console.log('Post Delete Failed', error.response?.data || error.message);
+            toast.error(`Post Delete Failed: ${errorMessage}`);
         }
     }
 
@@ -103,7 +108,7 @@ const AdminDashboard = () => {
             toast.success('Logged out successful!');
             
             setTimeout(() => {
-              window.location.href = '/login';
+              window.location.href = '/';
             }, 2000);
 
         } catch (error) {
@@ -117,14 +122,14 @@ const AdminDashboard = () => {
 
     return (
         <>
-        <div className="max=w px-18 py-8 rounded-b-3xl shadow-md shadow-gray-200 flex flex-row place-content-between">
+        <div className="max=w px-20 py-8 rounded-b-3xl shadow-md shadow-gray-200 flex flex-row place-content-between">
             <h4 className='text-3xl font-bold'> BlogApp </h4>
             <button className='bg-blue-800 hover:bg-blue-700 font-semibold rounded text-white px-8 py-2' onClick={onLogout}>
             Log Out
             </button>
         </div>
 
-        <div className="w-4/5 mx-auto px-4 py-8">
+        <div className="max=w mx-auto px-20 justify-start py-8">
 
               <h1 className="text-3xl font-bold mb-4 text-center">Welcome, Admin!</h1>
         
@@ -136,7 +141,7 @@ const AdminDashboard = () => {
               ) : pendingPosts.length === 0 ? (
                 <p className="text-gray-500">No posts to approve and publish</p>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-6">
+                <div className="flex flex-wrap justify-start gap-6">
                   {pendingPosts.map((post) => (
                     <AdminBlogPostTile
                       key={post.id}

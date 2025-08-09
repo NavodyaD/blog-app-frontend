@@ -68,7 +68,9 @@ const PostDetailPage = () => {
           setUserLiked(false);
         }
       } catch (err) {
-        console.error('Failed to toggle like', err);
+        const errorMessage = err.response?.data?.message || err.message || 'Reaction failed';
+        console.log('Reaction Failed', err.response?.data || err.message);
+        toast.error(`Reaction failed: ${errorMessage}`);
       }
     };
 
@@ -99,9 +101,13 @@ const PostDetailPage = () => {
       console.log('Comment published successfully!', response.data);
       toast.success('Comment published successfully!');
 
+      getComments();
+      setComment('');
+
     } catch (error) {
-      console.log('Comment publish failed', error.response?.data || error.message);
-      toast.error('Comment submit failed!');
+      const errorMessage = error.response?.data?.message || error.message || 'Comment submit failed';
+      console.log('Comment Submit Failed', error.response?.data || error.message);
+      toast.error(`Comment submit failed: ${errorMessage}`);
     }
   }
 

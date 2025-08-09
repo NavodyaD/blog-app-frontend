@@ -40,7 +40,6 @@ const HomePage = () => {
     : 'https://via.placeholder.com/300'; 
   };
 
-
   return (
     <>
     <div className="max=w border px-16 py-6 flex flex-row place-content-between">

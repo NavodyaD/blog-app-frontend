@@ -22,11 +22,9 @@ const Login = () => {
 
             const { token, role } = response.data;
 
-            // Store token and role
             localStorage.setItem('token', token);
             localStorage.setItem('role', role);
 
-            // nav to dashboard based on role
             if (role === 'writer') {
                 navigate('/writer-dashboard');
             } else if (role === 'admin') {
@@ -40,8 +38,9 @@ const Login = () => {
             setError('');
 
         } catch (err) {
+            const errorMessage = err.response?.data?.message || err.message || 'Login failed';
             console.log('Login Failed', err.response?.data || err.message);
-            toast.error('Login failed!');
+            toast.error(`Login failed: ${errorMessage}`);
         }
     }
     
