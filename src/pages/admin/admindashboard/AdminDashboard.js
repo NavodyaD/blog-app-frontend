@@ -11,6 +11,7 @@ const AdminDashboard = () => {
     const [pendingPosts, setPendingPosts] = useState([]);
     const [publishedPosts, setPublishedPosts] = useState([]);
     const [loading, setLoading] = useState();
+    const [insights, setInsights] = useState(null);
 
     const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         fetchPendingPosts();
         fetchPublishedPosts();
+        fetchInsights();
     }, []);
 
     const fetchPendingPosts = async () => {
@@ -35,6 +37,28 @@ const AdminDashboard = () => {
             setLoading(false);
         }
     };
+
+    const fetchInsights = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/admin/insights', {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                }
+            });
+
+            setInsights(response.data);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    }
+
+    const cards = [
+        { title: 'Total Posts', count: insights?.totalPosts ?? 'N/A' },
+        { title: 'Published Posts', count: insights?.publishedPosts ?? 'N/A' },
+        { title: 'Pending Posts', count: insights?.pendingPosts ?? 'N/A' },
+        { title: 'Total Reactions', count: insights?.totalReactions ?? 'N/A' },
+        { title: 'Total Comments', count: insights?.totalComments ?? 'N/A' },
+    ];
 
     const fetchPublishedPosts = async () => {
         try {
@@ -124,16 +148,31 @@ const AdminDashboard = () => {
         <>
         <div className="max=w px-20 py-8 rounded-b-3xl shadow-md shadow-gray-200 flex flex-row place-content-between">
             <h4 className='text-3xl font-bold'> BlogApp </h4>
-            <button className='bg-blue-800 hover:bg-blue-700 font-semibold rounded text-white px-8 py-2' onClick={onLogout}>
+            <button className='bg-white hover:bg-gray-800 text-gray-800 hover:text-white border border-gray-800 font-semibold rounded px-8 py-2' onClick={onLogout}>
             Log Out
             </button>
         </div>
 
-        <div className="max=w mx-auto px-20 justify-start py-8">
+        <h1 className="text-3xl font-bold my-6 text-center">Welcome, Admin!</h1>
 
-              <h1 className="text-3xl font-bold mb-4 text-center">Welcome, Admin!</h1>
+        <div className="mx-20 my-8 bg-white border border-gray-300 rounded-xl overflow-hidden">
+            <div className="flex divide-x divide-gray-300">
+            {cards.map((card, index) => (
+            <div key={index} className="flex-1 text-center p-6">
+                <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">
+                {card.title}
+                </h3>
+                <p className="text-3xl font-semibold text-gray-800">
+                {card.count}
+                </p>
+            </div>
+            ))}
+            </div>
+        </div>
+
+        <div className="max=w mx-auto px-20 justify-start py-6">
         
-              <h2 className='text-2xl font-semibold mt-12 mb-2'>BlogPosts Pending Approval</h2>
+              <h2 className='text-2xl font-semibold mt-6 mb-2'>BlogPosts Pending Approval</h2>
               <p className='text-gray-500 font-semibold mb-12'>Approve & Publish Pending BlogPosts</p>
         
               {loading ? (

@@ -154,7 +154,7 @@ const WriterDashboard = () => {
         </div>
     </div>
 
-    <div className="max=w mx-auto px-16 py-8">
+    <div className="max=w mx-auto px-24 py-8">
 
       <h1 className="text-3xl font-bold mb-4 text-center">Welcome, Writer!</h1>
 
