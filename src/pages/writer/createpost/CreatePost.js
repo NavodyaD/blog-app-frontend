@@ -30,10 +30,10 @@ const CreatePost = () => {
             formData.append('post_status', 'draft');
 
             const response = await axios.post('http://127.0.0.1:8000/api/posts', formData, {
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-                'Content-Type': 'multipart/form-data',
-            },
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                    'Content-Type': 'multipart/form-data',
+                },
             });
 
             console.log('BlogPost saved as draft', response.data);
@@ -42,7 +42,7 @@ const CreatePost = () => {
             setSubmitError('');
 
             setTimeout(() => {
-            window.history.back();
+                window.history.back();
             }, 500);
 
         } catch (err) {
@@ -66,10 +66,10 @@ const CreatePost = () => {
             formData.append('post_status', 'pending');
 
             const response = await axios.post('http://127.0.0.1:8000/api/posts', formData, {
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-                'Content-Type': 'multipart/form-data',
-            },
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                    'Content-Type': 'multipart/form-data',
+                },
             });
 
             console.log('BlogPost submitted for approval', response.data);
@@ -78,7 +78,7 @@ const CreatePost = () => {
             setSubmitError('');
 
             setTimeout(() => {
-            window.history.back();
+                window.history.back();
             }, 500);
 
         } catch (err) {
@@ -93,16 +93,16 @@ const CreatePost = () => {
 
 
     return (
-        <div className="max-h-screen flex items-center justify-center bg-white-100 px-4">
-        <div className="w-full max-w-3/4 bg-white p-16 rounded shadow">
+        <div className="max-h-screen flex items-center justify-center bg-white-100 my-6 md:my-16 mx-4 md:mx-24">
+        <div className="w-full max-w-3/4 bg-white">
             <button
                 onClick={() => window.history.back()}
-                className="px-4 py-2 border border-gray-400 text-black rounded hover:bg-gray-200"
+                className="px-4 py-2 my-6 border border-gray-400 text-black rounded hover:bg-gray-200"
             >
                 ← Back
             </button>
-            <h2 className="text-2xl font-bold text-center mb-3 text-gray-800">Create a Blog Post</h2>
-            <h4 className="text-xl font-medium text-center mb-6 text-gray-500">Create a post!</h4>
+            <h2 className="text-2xl font-bold text-center mb-2 text-gray-800">Create a Blog Post</h2>
+            <h4 className="text-xl font-medium text-center mb-4 text-gray-500">Create a post!</h4>
             
             <div>
                 <label className="block text-gray-700 mb-1">Post Title</label>
@@ -139,19 +139,21 @@ const CreatePost = () => {
                 />
             </div>
 
-            <button
-                className="w-full bg-blue-900 text-white py-2 my-4 rounded hover:bg-blue-700 transition duration-200"
-                onClick={handleSaveDraft}
-            >
-                Save Draft
-            </button>
+            <div className='flex md:flex-row flex-col space-x-0 md:space-x-8 my-4'>
+                <button
+                    className="w-full bg-white border border-gray-800 text-gray-800 py-3 my-2 rounded hover:bg-gray-800 hover:text-white transition duration-200"
+                    onClick={handleSaveDraft}
+                >
+                    Save Draft
+                </button>
 
-            <button
-                className="w-full bg-blue-900 text-white py-2 my-4 rounded hover:bg-blue-700 transition duration-200"
-                onClick={handleSubmit}
-            >
-                Submit For Approval
-            </button>
+                <button
+                    className="w-full bg-gray-900 text-white py-3 my-2 rounded hover:bg-gray-700 transition duration-200"
+                    onClick={handleSubmit}
+                >
+                    Submit For Approval
+                </button>
+            </div>
         </div>
         </div>
     );

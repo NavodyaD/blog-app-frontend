@@ -122,67 +122,79 @@ const PostDetailPage = () => {
 
   return (
     <>
-    <div className="p-14 w-5/6 mx-auto">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-14 py-8">
+      
       <button
         onClick={() => window.history.back()}
-        className="px-4 py-2 border border-gray-400 text-black rounded hover:bg-gray-100"
+        className="px-4 py-2 border border-gray-400 text-black rounded hover:bg-gray-100 mb-6"
       >
         ← Back
       </button>
 
-      <h1 className="text-4xl font-bold my-8">{post.post_title}</h1>
-      
-      <img src={getImageUrl(post.cover_image)} alt="cover" className="mb-4 rounded rounded-3xl w-full h-auto max-h-96 object-cover" />
-      
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6">{post.post_title}</h1>
+
+      <img
+        src={getImageUrl(post.cover_image)}
+        alt="cover"
+        className="mb-6 rounded-2xl w-full max-h-96 object-cover"
+      />
+
       <div
-        className="prose max-w-none text-lg text-gray-800 mb-4"
+        className="text-base sm:text-lg text-gray-800 mb-6"
         dangerouslySetInnerHTML={{ __html: post.post_body }}
       ></div>
-      
-      <p className="text-lg text-gray-500 mb-8">Author: {post.user?.name || 'Unknown Author'}</p>
 
-      <hr className='border border-gray-200'/>
+      <p className="text-gray-500 mb-8">Author: {post.user?.name || 'Unknown Author'}</p>
 
-      <div className='w-3/5 my-6 justify-between items-center flex flex-row'>
-        <p className='font-semibold text-lg'>If you're interested with the post, make a like reaction!</p>
+      <hr className="border border-gray-200 mb-6" />
+
+      <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <p className="font-semibold text-base sm:text-lg">
+          If you're interested in the post, make a like reaction!
+        </p>
         <button
           onClick={handleReaction}
-          className={`mt-2 px-10 py-4 font-semibold text-lg rounded rounded-lg ${
-            userLiked ? 'bg-red-500 text-white' : 'bg-white border border-gray-400 text-black'
+          className={`px-6 py-3 font-semibold text-base rounded ${
+            userLiked
+              ? 'bg-red-500 text-white'
+              : 'bg-white border border-gray-400 text-black'
           }`}
         >
           {userLiked ? 'Liked' : 'Like'} ({likes})
         </button>
       </div>
 
-      <hr className='border border-gray-200'/>
-      
-      <div className='w-5/6 my-4'>
-        <p className='text-2xl font-bold text-balck-800 mb-4'>Comment your opinion</p>
+      <hr className="border border-gray-200 mb-6" />
 
-        <textarea 
-          name="message" 
-          rows="5" cols="30"
+      <div className="w-full mb-10">
+        <p className="text-xl font-bold text-black mb-4">Comment your opinion</p>
+
+        <textarea
+          name="message"
+          rows="5"
           placeholder="Enter your comment here..."
-          className='w-full px-2 py-2 mb-6 border border-black-800 rounded'
+          className="w-full px-3 py-2 mb-4 border border-gray-400 rounded"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         ></textarea>
 
-        <button onClick={handleCommentSubmit} className='px-6 py-2 text-white rounded bg-blue-800 hover:bg-blue-600'>
+        <button
+          onClick={handleCommentSubmit}
+          className="px-6 py-2 text-white rounded bg-blue-800 hover:bg-blue-600"
+        >
           Publish Comment
         </button>
       </div>
 
-      <div className='w-3/4'>
-        <p className='text-2xl font-bold text-black-800 mb-4'>User Comments</p>
-        
+      <div className="w-full mb-8">
+        <p className="text-xl font-bold text-black mb-4">User Comments</p>
+
         {commentsLoading ? (
           <p>Comments Loading...</p>
         ) : postComments.length === 0 ? (
           <p>No comments to show</p>
         ) : (
-          <div className="justify-center gap-6">
+          <div className="flex flex-col gap-4">
             {postComments.map((comment) => (
               <CommentTile
                 key={comment.id}
@@ -192,12 +204,11 @@ const PostDetailPage = () => {
             ))}
           </div>
         )}
-        
       </div>
     </div>
-    
+
     <Footer />
-    </>
+  </>
   );
 };
 

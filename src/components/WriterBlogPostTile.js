@@ -17,7 +17,7 @@ const WriterBlogPostTile = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-md w-[300px] shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1">
+    <div className="bg-white border border-gray-200 rounded-md md:w-[300px] w-full shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1">
       <div className="relative w-full p-2 h-[180px]" onClick={onClick}>
         <img
           src={image}

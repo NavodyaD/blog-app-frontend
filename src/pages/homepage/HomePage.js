@@ -42,9 +42,9 @@ const HomePage = () => {
 
   return (
     <>
-    <div className="max=w border px-16 py-6 flex flex-row place-content-between">
+    <div className="max=w border px-4 md:px-16 py-6 flex flex-col md:flex-row place-content-between">
       <h4 className='text-3xl font-bold'> BlogApp </h4>
-      <div className='flex flex-row space-x-6'>
+      <div className='flex my-4 md:my-0 flex-row space-x-6'>
         <button className='bg-white border text-gray-800 border-gray-800 hover:bg-gray-800 hover:text-white font-semibold rounded px-8 py-2' onClick={gotoLogin}>
           Login
         </button>
@@ -54,10 +54,10 @@ const HomePage = () => {
       </div>
     </div>
       
-    <div className="py-6 px-24 bg-gray-50 justify-around min-h-screen">
+    <div className="py-6 md:px-24 px-4 bg-gray-50 justify-around min-h-screen">
       <div className="mb-10 text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Explore Blog Posts</h1>
-        <p className="text-lg text-gray-600">Read the latest insights, stories, and news</p>
+        <h1 className="md:text-4xl text-2xl font-bold text-gray-800 mb-2">Explore Blog Posts</h1>
+        <p className="md:text-lg text-md text-gray-600">Read the latest insights, stories, and news</p>
       </div>
 
       <div className="flex flex-wrap justify-start gap-6">

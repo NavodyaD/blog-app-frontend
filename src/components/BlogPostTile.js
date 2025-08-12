@@ -9,7 +9,7 @@ const BlogPostTile = ({ image, title, body, author, onClick }) => {
 
   return (
     <div
-      className="bg-white rounded-md w-[300px] border border-gray-300 shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1 cursor-pointer">
+      className="bg-white rounded-md md:w-[300px] w-full border border-gray-300 shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1 cursor-pointer">
       <div className="relative p-2 w-full h-[180px]" onClick={onClick}>
         <img
           src={image}
