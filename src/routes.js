@@ -9,9 +9,11 @@ import HomePage from "./pages/homepage/HomePage";
 import WriterEditPost from "./pages/writer/writereditpost/WriterEditPost";
 import PostDetailPage from "./pages/postdetailpage/PostDetailPage";
 import Unauthorized from "./pages/unauthorized/unauthorized";
+import PolicyPage from "./pages/policypage/PolicyPage";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 const AppRoutes = () => {
     return (
@@ -26,6 +28,7 @@ const AppRoutes = () => {
                 <Route path="/edit-post" element={<WriterEditPost />} />
                 <Route path="/posts/:id" element={<PostDetailPage />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="/policy" element={<PolicyPage />}/>
 
                 <Route
                     path="/writer-dashboard"

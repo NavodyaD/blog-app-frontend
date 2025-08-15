@@ -4,6 +4,11 @@ import CommentTile from '../../components/CommentTile';
 import axios from 'axios';
 import Footer from '../../components/Footer';
 import { toast } from 'react-toastify';
+import { BiLike } from 'react-icons/bi';
+import { BiSolidLike } from 'react-icons/bi';
+import AuthPopup from '../../components/AuthPopup';
+import FailurePopup from '../../components/FailurePopup';
+import OwnCommentTile from '../../components/OwnCommentTile';
 
 
 const PostDetailPage = () => {
@@ -16,6 +21,13 @@ const PostDetailPage = () => {
 
   const [likes, setLikes] = useState(0);
   const [userLiked, setUserLiked] = useState(false);
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
+
+  const [showFailurePopup, setShowFailurePopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+
+  const [ownComments, setOwnComments] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const authToken = localStorage.getItem('token');
 
@@ -23,7 +35,11 @@ const PostDetailPage = () => {
     fetchPost();
     getComments();
     fetchReactionData();
-
+    
+    if (authToken) {
+      getCurrentUser();
+      getOwnComments();
+    }
   }, [id, authToken]);
 
   const fetchPost = async () => {
@@ -50,6 +66,11 @@ const PostDetailPage = () => {
     };
 
     const handleReaction = async () => {
+      if (!authToken) {
+        setShowAuthPopup(true);
+        return;
+      }
+
       try {
         const response = await axios.post(
           `http://127.0.0.1:8000/api/posts/react/${id}`, {},
@@ -88,6 +109,17 @@ const PostDetailPage = () => {
   }
 
   const handleCommentSubmit = async () => {
+    if (!authToken) {
+      setShowAuthPopup(true);
+      return;
+    }
+
+    if (!comment) {
+        setPopupMessage('Please enter a comment to publish.');
+        setShowFailurePopup(true);
+        return;
+    }
+
     try {
       const response = await axios.post(`http://127.0.0.1:8000/api/comments`, {
         blog_post_id: id,
@@ -111,10 +143,58 @@ const PostDetailPage = () => {
     }
   }
 
+    const getCurrentUser = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/current-user`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        setCurrentUser(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log('Failed to fetch current user:', error.message);
+      }
+    };
+
+  const getOwnComments = async () => {
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/user/comments`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        }
+      });
+      setOwnComments(response.data);
+    } catch (error) {
+      console.log('Failed to fetch own comments:', error.message);
+    }
+  };
+
+  const deleteComment = async (commentId) => {
+    if (!authToken) return;
+
+    try {
+      await axios.delete(`http://127.0.0.1:8000/api/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      toast.success('Comment deleted successfully!');
+      getComments();
+    } catch (error) {
+      console.log('Delete failed:', error.message);
+      toast.error('Failed to delete comment');
+    }
+  };
+
+
   const getImageUrl = (imagePath) => {
   return imagePath
     ? `http://127.0.0.1:8000/storage/${imagePath}`
-    : 'https://via.placeholder.com/300'; 
+    : ''; 
   };
 
 
@@ -122,6 +202,13 @@ const PostDetailPage = () => {
 
   return (
     <>
+    <FailurePopup
+      isOpen={showFailurePopup}
+      message={popupMessage}
+      onClose={() => setShowFailurePopup(false)}
+    />
+    <AuthPopup isOpen={showAuthPopup} onClose={() => setShowAuthPopup(false)} />
+
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-14 py-8">
       
       <button
@@ -154,13 +241,18 @@ const PostDetailPage = () => {
         </p>
         <button
           onClick={handleReaction}
-          className={`px-6 py-3 font-semibold text-base rounded ${
+          className={`flex items-center gap-2 px-6 py-3 font-semibold text-base rounded transition-colors duration-200 ${
             userLiked
-              ? 'bg-red-500 text-white'
+              ? 'bg-green-700 text-white'
               : 'bg-white border border-gray-400 text-black'
           }`}
         >
-          {userLiked ? 'Liked' : 'Like'} ({likes})
+          {userLiked ? (
+            <BiSolidLike size={20} className="text-white" />
+          ) : (
+            <BiLike size={20} className="text-black" />
+          )}
+          {likes} Reactions
         </button>
       </div>
 
@@ -169,18 +261,22 @@ const PostDetailPage = () => {
       <div className="w-full mb-10">
         <p className="text-xl font-bold text-black mb-4">Comment your opinion</p>
 
-        <textarea
-          name="message"
-          rows="5"
-          placeholder="Enter your comment here..."
-          className="w-full px-3 py-2 mb-4 border border-gray-400 rounded"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        ></textarea>
+        {authToken && (
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Enter your comment here..."
+            className="w-full px-3 py-2 mb-4 border border-gray-400 rounded"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            minLength={3}
+            maxLength={250}
+          ></textarea>
+        )}
 
         <button
           onClick={handleCommentSubmit}
-          className="px-6 py-2 text-white rounded bg-blue-800 hover:bg-blue-600"
+          className="px-6 py-2 text-white rounded bg-purple-900 hover:bg-purple-800"
         >
           Publish Comment
         </button>
@@ -195,13 +291,25 @@ const PostDetailPage = () => {
           <p>No comments to show</p>
         ) : (
           <div className="flex flex-col gap-4">
-            {postComments.map((comment) => (
-              <CommentTile
-                key={comment.id}
-                username={comment.user?.name || 'Unknown User'}
-                comment_text={comment.comment_text}
-              />
-            ))}
+            {postComments.map((comment) =>
+              currentUser?.id === comment.user?.id ? (
+                <OwnCommentTile
+                  key={comment.id}
+                  comment_id={comment.id}
+                  comment_text={comment.comment_text}
+                  created_at={comment.created_at}
+                  onDelete={deleteComment}
+                />
+              ) : (
+                <CommentTile
+                  key={comment.id}
+                  comment_id={comment.id}
+                  username={comment.user?.name || 'Unknown User'}
+                  comment_text={comment.comment_text}
+                  created_at={comment.created_at}
+                />
+              )
+            )}
           </div>
         )}
       </div>

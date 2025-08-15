@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import FailurePopup from '../../../components/FailurePopup';
 
 const CreatePost = () => {
     const [postTitle, setPostTitle] = useState('');
@@ -16,10 +17,20 @@ const CreatePost = () => {
     const [submitSuccess, setSubmitSuccess] = useState('');
     const [submitError, setSubmitError] = useState('');
 
+    // popup
+    const [showFailurePopup, setShowFailurePopup] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
+
     const authToken = localStorage.getItem('token');
 
     const handleSaveDraft = async (e) => {
         e.preventDefault();
+
+        if (!postTitle || !postBody || !coverImage) {
+            setPopupMessage('Please fill out all fields before submitting.');
+            setShowFailurePopup(true);
+            return;
+        }
 
         try {
 
@@ -58,6 +69,12 @@ const CreatePost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!postTitle || !postBody || !coverImage) {
+            setPopupMessage('Please fill out all fields before submitting.');
+            setShowFailurePopup(true);
+            return;
+        }
+        
         try {
             const formData = new FormData();
             formData.append('post_title', postTitle);
@@ -94,6 +111,11 @@ const CreatePost = () => {
 
     return (
         <div className="max-h-screen flex items-center justify-center bg-white-100 my-6 md:my-16 mx-4 md:mx-24">
+            <FailurePopup
+            isOpen={showFailurePopup}
+            message={popupMessage}
+            onClose={() => setShowFailurePopup(false)}
+            />
         <div className="w-full max-w-3/4 bg-white">
             <button
                 onClick={() => window.history.back()}
@@ -141,14 +163,14 @@ const CreatePost = () => {
 
             <div className='flex md:flex-row flex-col space-x-0 md:space-x-8 my-4'>
                 <button
-                    className="w-full bg-white border border-gray-800 text-gray-800 py-3 my-2 rounded hover:bg-gray-800 hover:text-white transition duration-200"
+                    className="w-full bg-white border border-purple-900 text-purple-900 py-3 my-2 rounded hover:bg-purple-900 hover:text-white transition duration-200"
                     onClick={handleSaveDraft}
                 >
                     Save Draft
                 </button>
 
                 <button
-                    className="w-full bg-gray-900 text-white py-3 my-2 rounded hover:bg-gray-700 transition duration-200"
+                    className="w-full bg-purple-900 text-white py-3 my-2 rounded hover:bg-purple-800 transition duration-200"
                     onClick={handleSubmit}
                 >
                     Submit For Approval
