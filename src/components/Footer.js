@@ -1,22 +1,25 @@
 const Footer = () => {
     return (
-        <div className="max-w-screen-xl mx-auto w-full px-4 sm:px-8 lg:px-24 py-10 border-t border-gray-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-10 sm:gap-0">
-      
-        <div className="flex flex-col space-y-4">
-            <p className="text-xl font-semibold">Pages</p>
-            <a href="/signup" className="text-gray-400 underline hover:text-gray-800">Sign Up</a>
-            <a href="/login" className="text-gray-400 underline hover:text-gray-800">Login</a>
-            <a href="/" className="text-gray-400 underline hover:text-gray-800">Home Page</a>
-        </div>
-
-        <div className="flex flex-col space-y-4">
-            <p className="text-xl font-semibold">Other Pages</p>
-            <p className="text-gray-400 underline hover:text-gray-800">Privacy & Policy</p>
-            <p className="text-gray-400 underline hover:text-gray-800">Terms & Conditions</p>
-        </div>
-
-        <div className="text-3xl font-bold text-gray-900 hover:text-gray-700">BlogApp</div>
-        </div>
+        <footer className="bg-white rounded-lg shadow-sm m-4">
+            <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+                <div className="sm:flex sm:items-center sm:justify-between">
+                    <a href="#" className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+                        <img src="/assets/images/Postly_logo.jpg" className="h-8" alt="Postly Logo" />
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Postly</span>
+                    </a>
+                    <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+                        <li>
+                            <a href="/policy" className="hover:text-gray-800 me-4 md:me-6">Privacy Policy</a>
+                        </li>
+                        <li>
+                            <a href="/policy" className="hover:text-gray-800">Terms & Conditions</a>
+                        </li>
+                    </ul>
+                </div>
+                <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+                <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 <a href="/" class="hover:underline">Postly™</a>. All Rights Reserved.</span>
+            </div>
+        </footer>
     );
 }
 

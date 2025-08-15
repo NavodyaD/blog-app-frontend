@@ -1,4 +1,6 @@
 import React from 'react';
+import { MdDeleteOutline } from 'react-icons/md';
+import { FaRegEdit } from 'react-icons/fa';
 
 const WriterBlogPostTile = ({ 
   image, 
@@ -17,7 +19,7 @@ const WriterBlogPostTile = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-md md:w-[300px] w-full shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1">
+    <div className="bg-white border border-gray-200 rounded-md md:w-full w-full shadow-lg overflow-hidden flex flex-col items-center transition-transform duration-300 ease-in-out hover:-translate-y-1">
       <div className="relative w-full p-2 h-[180px]" onClick={onClick}>
         <img
           src={image}
@@ -28,7 +30,7 @@ const WriterBlogPostTile = ({
 
       <div className="p-4 text-center w-full relative">
         <p className="text-lg text-left font-semibold text-gray-800 mb-1">{title}</p>
-        <p className="text-sm text-left text-blue-800 font-semibold mb-2">{postState}</p>
+        <p className="text-sm text-center px-2 py-1 bg-gray-50 border border-gray-200 text-gray-800 font-bold uppercase mb-2">{postState}</p>
         <div
           className="text-sm text-justify text-gray-600 mb-2"
           dangerouslySetInnerHTML={{ __html: getPreview(body) }}
@@ -39,15 +41,18 @@ const WriterBlogPostTile = ({
       <div className="flex justify-between w-full px-4 pb-4 mt-auto gap-2">
         <button
           onClick={onEdit}
-          className="border border-gray-800 text-gray-800 text-sm px-4 py-1 hover:bg-blue-800 hover:text-white rounded transition"
+          className="flex items-center gap-x-2 border border-gray-300 text-gray-800 text-sm px-3 py-2 hover:bg-blue-200 hover:text-blue-800 hover:border-blue-800 rounded-lg transition"
         >
-          Edit Post
+          <FaRegEdit size={16} />
+          Edit
         </button>
+
         <button
           onClick={onDelete}
-          className="text-gray-800 border border-gray-800 text-sm px-4 py-1 rounded hover:bg-red-800 hover:text-white transition"
+          className="flex items-center gap-x-2 text-gray-800 border border-gray-300 text-sm px-3 py-2 rounded-lg hover:bg-red-200 hover:text-red-800 hover:border-red-800 transition"
         >
-          Delete Post
+          <MdDeleteOutline size={18} />
+          Delete
         </button>
       </div>
     </div>
