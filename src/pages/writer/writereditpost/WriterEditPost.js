@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import FailurePopup from '../../../components/FailurePopup';
 
 const WriterEditPost = () => {
   const location = useLocation();
@@ -18,6 +19,10 @@ const WriterEditPost = () => {
 
   const [updateSuccess, setUpdateSuccess] = useState('');
   const [updateError, setUpdateError] = useState('');
+
+  // popup
+  const [showFailurePopup, setShowFailurePopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
 
   const authToken = localStorage.getItem('token');
 
@@ -35,6 +40,12 @@ const WriterEditPost = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+
+    if (!postTitle || !postBody || !coverImage) {
+        setPopupMessage('Please fill out all fields before update.');
+        setShowFailurePopup(true);
+        return;
+    }
 
     try {
       const response = await axios.patch(
@@ -67,11 +78,16 @@ const WriterEditPost = () => {
   };
 
   return (
-    <div className="max-h-screen flex items-center justify-center bg-white-100 px-4">
-      <div className="w-full max-w-3/4 bg-white p-16 rounded shadow">
+    <div className="flex items-center justify-center bg-white-100 px-4">
+      <FailurePopup
+        isOpen={showFailurePopup}
+        message={popupMessage}
+        onClose={() => setShowFailurePopup(false)}
+      />
+      <div className="w-full max-w-3/4 bg-white py-4 px-2 md:p-16 rounded shadow">
         <button
           onClick={() => window.history.back()}
-          className="px-4 py-2 border border-gray-400 text-black rounded hover:bg-gray-100"
+          className="px-4 py-2 mb-4 border border-gray-400 text-black rounded hover:bg-gray-100"
         >
           ← Back
         </button>
@@ -103,7 +119,7 @@ const WriterEditPost = () => {
           </div>
         </div>
 
-        <div>
+        <div className='hidden'>
           <label className="block text-gray-700 mb-1">Cover Image</label>
           <input
             type="text"
@@ -114,7 +130,7 @@ const WriterEditPost = () => {
         </div>
 
         <button
-          className="w-full bg-green-700 text-white py-2 my-4 rounded hover:bg-green-600 transition duration-200"
+          className="bg-purple-900 text-white px-16 py-4 my-4 rounded hover:bg-purple-800 transition duration-200"
           onClick={handleUpdate}
         >
           Update Post
