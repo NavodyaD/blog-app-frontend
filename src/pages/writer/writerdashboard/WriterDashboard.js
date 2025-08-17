@@ -20,7 +20,6 @@ import EngagingPostsSection from '../../../components/EngagingPostsSection';
 import { FiSearch } from 'react-icons/fi';
 import HeroSection01 from '../../../components/HeroSection01';
 
-
 const WriterDashboard = () => {
   const [posts, setPosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
@@ -36,19 +35,16 @@ const WriterDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState(null);
 
-
   const navigate = useNavigate();
 
   const authToken = localStorage.getItem('token');
 
-const fetchOwnPosts = async () => {
+  const fetchOwnPosts = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/api/own-posts', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
+        headers: { Authorization: `Bearer ${authToken}` },
       });
-      setPosts(response.data);
+      setPosts(response.data.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
     } finally {
@@ -59,11 +55,9 @@ const fetchOwnPosts = async () => {
   const fetchOwnDrafts = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/api/own-drafts', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
+        headers: { Authorization: `Bearer ${authToken}` },
       });
-      setDrafts(response.data);
+      setDrafts(response.data.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
@@ -72,8 +66,8 @@ const fetchOwnPosts = async () => {
   const fetchPosts = async (page) => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/posts?page=${page}`);
-      setAllPosts(response.data.data);
-      setLastPage(response.data.last_page);
+      setAllPosts(response.data.data.data);
+      setLastPage(response.data.data.last_page);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
@@ -109,7 +103,7 @@ const fetchOwnPosts = async () => {
       const response = await axios.post('http://127.0.0.1:8000/api/posts/search', {
         query: searchQuery,
       });
-      setSearchResults(response.data);
+      setSearchResults(response.data.data);
     } catch (error) {
       console.error('Error searching posts:', error);
     }
@@ -122,15 +116,10 @@ const fetchOwnPosts = async () => {
 
   const onDeletePost = async (id) => {
     try {
-      const response = await axios.delete(`http://127.0.0.1:8000/api/posts/${id}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
+      await axios.delete(`http://127.0.0.1:8000/api/posts/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
       });
-
-      console.log('Post Deleted Successfully!');
       toast.success('Post Deleted Succesful!');
-
       fetchOwnPosts();
       fetchOwnDrafts();
     } catch (error) {
@@ -144,16 +133,10 @@ const fetchOwnPosts = async () => {
       await axios.post(
         'http://127.0.0.1:8000/api/writer-logout',
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       );
-
       localStorage.removeItem('token');
       toast.success('Logged out successfully!');
-
       setTimeout(() => {
         window.location.href = '/';
       }, 500);
@@ -164,19 +147,12 @@ const fetchOwnPosts = async () => {
 
   const onSaveDraft = async (id) => {
     try {
-      const response = await axios.patch(
+      await axios.patch(
         `http://127.0.0.1:8000/api/posts/${id}/save`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       );
-
-      console.log('Post submitted successful!');
       toast.success('Post saved and sent for approval!');
-
       fetchOwnPosts();
       fetchOwnDrafts();
     } catch (error) {
@@ -194,18 +170,14 @@ const fetchOwnPosts = async () => {
           alt="BlogApp Logo"
           className="h-8 md:h-12 w-auto"
         />
-
         <div className="md:hidden">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
       </div>
-      
       <div
-        className={`${
-          isMenuOpen ? "flex" : "hidden"
-        } md:flex flex-col md:flex-row md:items-center mt-4 md:mt-0 space-y-4 md:space-y-0 md:space-x-6`}
+        className={`${isMenuOpen ? "flex" : "hidden"} md:flex flex-col md:flex-row md:items-center mt-4 md:mt-0 space-y-4 md:space-y-0 md:space-x-6`}
       >
         <button
           className="flex items-center justify-center gap-2 bg-white text-purple-900 border border-purple-900 hover:bg-purple-800 hover:text-white rounded font-semibold px-8 py-2 w-full md:w-auto"
@@ -221,21 +193,17 @@ const fetchOwnPosts = async () => {
           <FiLogOut size={18} />
           <span className="whitespace-nowrap">Log Out</span>
         </button>
-
       </div>
     </div>
 
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 py-8">
-
       <h1 className="md:text-3xl text-2xl font-bold mb-6 text-left">
         <span className="mr-2 text-yellow-400 text-3xl">👋</span>
         Welcome, Writer!
       </h1>
 
       <BlogBannerCarousel onCreatePost={onCreatePost} />
-
       <EngagingPostsSection />
-
       <HeroSection01 />
 
       <div className="mb-8">
@@ -251,7 +219,6 @@ const fetchOwnPosts = async () => {
             <FaRegNewspaper className="text-xl" />
             Your Posts
           </button>
-
           <button
             onClick={() => setActiveTab('drafts')}
             className={`pb-2 font-semibold text-sm md:text-lg flex items-center gap-2 ${
@@ -280,7 +247,6 @@ const fetchOwnPosts = async () => {
           <>
             <h2 className="text-2xl font-semibold mb-2">Your Blog Posts</h2>
             <p className="font-semibold text-gray-500 mb-10">Blog posts written by you</p>
-
             {loading ? (
               <p>Loading...</p>
             ) : posts.length === 0 ? (
@@ -309,7 +275,6 @@ const fetchOwnPosts = async () => {
           <>
             <h2 className="text-2xl font-semibold mb-2">Your Post Drafts</h2>
             <p className="font-semibold text-gray-500 mb-10">Submit drafts for approval</p>
-
             {drafts.length === 0 ? (
               <p className="text-gray-500">You have not created drafts yet.</p>
             ) : (
@@ -339,7 +304,6 @@ const fetchOwnPosts = async () => {
               <h1 className="text-4xl font-bold text-gray-800 mb-2">Explore Blog Posts</h1>
               <p className="text-lg text-gray-600">Read the latest insights, stories, and news</p>
             </div>
-
             <div className="flex flex-col sm:flex-row items-center justify-center mb-6 gap-4 w-full">
               <input
                 type="text"
@@ -366,7 +330,6 @@ const fetchOwnPosts = async () => {
                 )}
               </div>
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {(searchResults ?? allPosts).map((post) => (
                 <BlogPostTile
@@ -381,7 +344,6 @@ const fetchOwnPosts = async () => {
                 />
               ))}
             </div>
-
             <div className="flex justify-center items-center mt-10 space-x-4">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -390,9 +352,7 @@ const fetchOwnPosts = async () => {
               >
                 <MdArrowBackIos size={14} /> Previous
               </button>
-
               <span className="text-lg font-medium">{currentPage}</span>
-
               <button
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, lastPage))}
                 disabled={currentPage === lastPage}
@@ -401,10 +361,8 @@ const fetchOwnPosts = async () => {
                 Next <MdOutlineNavigateNext size={20} />
               </button>
             </div>
-
           </>
-        )
-        }
+        )}
       </div>
 
       <ConfirmPopup
@@ -417,9 +375,8 @@ const fetchOwnPosts = async () => {
         }}
       />
     </div>
-
     <Footer />
-  </>
+    </>
   );
 };
 

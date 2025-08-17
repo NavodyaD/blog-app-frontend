@@ -333,7 +333,7 @@ const AdminDashboard = () => {
           <div className="bg-white border border-gray-300 rounded-lg p-5 shadow-sm">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">🔥 Most Liked Posts</h3>
             <ol className="space-y-4">
-              {topLiked.map((post, index) => (
+              {topLiked?.data?.map((post, index) => (
                 <li
                   key={post.id}
                   className="flex flex-col gap-1 border-b pb-3 border-gray-200 last:border-b-0"
@@ -359,7 +359,7 @@ const AdminDashboard = () => {
           <div className="bg-white border border-gray-300 rounded-lg p-5 shadow-sm">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">💬 Most Commented Posts</h3>
             <ol className="space-y-4">
-              {topCommented.map((post, index) => (
+              {topCommented?.data?.map((post, index) => (
                 <li
                   key={post.id}
                   className="flex flex-col gap-1 border-b pb-3 border-gray-200 last:border-b-0"
@@ -404,7 +404,7 @@ const AdminDashboard = () => {
       <div className="px-6 md:px-20 py-6">
         {activeTab === 'pending' ? (
           <>
-            {pendingPosts.length === 0 ? (
+            {pendingPosts?.data?.length === 0 ? (
               <p className="text-gray-500">No pending posts.</p>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -430,7 +430,7 @@ const AdminDashboard = () => {
               <p className="text-gray-500">No published posts.</p>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {publishedPosts.map((post) => (
+                {publishedPosts?.data?.map((post) => (
                   <BlogPostTile
                     key={post.id}
                     image={getImageUrl(post.cover_image)}
