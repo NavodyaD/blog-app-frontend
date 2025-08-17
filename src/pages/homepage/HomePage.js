@@ -31,8 +31,9 @@ const HomePage = () => {
   const fetchPosts = async (page) => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/posts?page=${page}`);
-      setPosts(response.data.data);
-      setLastPage(response.data.last_page);
+
+      setPosts(response.data.data.data);
+      setLastPage(response.data.data.last_page);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
@@ -50,18 +51,19 @@ const HomePage = () => {
     navigate('/signup');
   }
 
-    const handleSearch = async () => {
-      if (!searchQuery.trim()) return;
-  
-      try {
-        const response = await axios.post('http://127.0.0.1:8000/api/posts/search', {
-          query: searchQuery,
-        });
-        setSearchResults(response.data);
-      } catch (error) {
-        console.error('Error searching posts:', error);
-      }
-    };
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/posts/search', {
+        query: searchQuery,
+      });
+
+      setSearchResults(response.data.data);
+    } catch (error) {
+      console.error('Error searching posts:', error);
+    }
+  };
   
     const clearSearch = () => {
       setSearchQuery('');
@@ -194,18 +196,18 @@ const HomePage = () => {
       </div>
  
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(searchResults ?? posts).map((post) => (
-              <BlogPostTile
-                key={post.id}
-                image={getImageUrl(post.cover_image)}
-                title={post.post_title}
-                body={post.post_body}
-                author={post.user?.name || 'Unknown Author'}
-                likes={post.reactions_count}
-                comments={post.comments_count}
-                onClick={() => handlePostClick(post.id)}
-              />
-            ))}
+        {(searchResults ?? posts).map((post) => (
+          <BlogPostTile
+            key={post.id}
+            image={getImageUrl(post.cover_image)}
+            title={post.post_title}
+            body={post.post_body}
+            author={post.user?.name || 'Unknown Author'}
+            likes={post.reactions_count}
+            comments={post.comments_count}
+            onClick={() => handlePostClick(post.id)}
+          />
+        ))}
       </div>
       <div className="flex justify-center items-center mt-10 space-x-4">
         <button

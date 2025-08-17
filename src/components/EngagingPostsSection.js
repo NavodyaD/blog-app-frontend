@@ -49,8 +49,8 @@ const EngagingPostsSection = () => {
         axios.get('http://127.0.0.1:8000/api/admin/insights/top-commented'),
       ]);
 
-      setTopLikedPosts(likedRes.data);
-      setTopCommentedPosts(commentedRes.data);
+      setTopLikedPosts(likedRes.data.data);
+      setTopCommentedPosts(commentedRes.data.data);
     } catch (error) {
       console.error('Error fetching engaging posts:', error);
     } finally {

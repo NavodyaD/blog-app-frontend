@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AiOutlineHome } from 'react-icons/ai';
 import FailurePopup from '../../components/FailurePopup';
+import { FiLogIn } from 'react-icons/fi';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -35,7 +36,7 @@ const Login = () => {
                 password
             });
 
-            const { token, role } = response.data;
+            const { token, role } = response.data.data;
 
             localStorage.setItem('token', token);
             localStorage.setItem('role', role);
@@ -55,7 +56,6 @@ const Login = () => {
             console.log('Login Failed', err.response?.data || err.message);
             setError(errorMessage);
             setIsPopupOpen(true);
-            //toast.error(`Login failed: ${errorMessage}`);
         }
     }
 
@@ -108,9 +108,10 @@ const Login = () => {
 
                         <button
                             type="submit"
-                            className="w-full bg-purple-900 text-white py-2 rounded hover:bg-purple-800 transition duration-200"
+                            className="flex justify-center items-center gap-3 w-full bg-purple-900 text-white py-2 rounded hover:bg-purple-800 transition duration-200"
                         >
-                            Login
+                            <FiLogIn size={18} />
+                            <span className="whitespace-nowrap">Login</span>
                         </button>
                     </form>
 
