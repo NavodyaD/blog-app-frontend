@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -19,6 +19,8 @@ const WriterEditPost = () => {
 
   const [updateSuccess, setUpdateSuccess] = useState('');
   const [updateError, setUpdateError] = useState('');
+  const [runUpdate, setRunUpdate] = useState(false);
+  const submittingRef = useRef(false);
 
   // popup
   const [showFailurePopup, setShowFailurePopup] = useState(false);
@@ -47,6 +49,10 @@ const WriterEditPost = () => {
         return;
     }
 
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setRunUpdate(true);
+
     try {
       const response = await axios.patch(
         `http://127.0.0.1:8000/api/posts/${editingPost.id}`,
@@ -62,6 +68,9 @@ const WriterEditPost = () => {
           },
         }
       );
+
+      submittingRef.current = false;
+      setRunUpdate(false);
 
       console.log('Post updated successfully', response.data);
       setUpdateSuccess('Post updated successfully!');
@@ -132,8 +141,10 @@ const WriterEditPost = () => {
         <button
           className="bg-purple-900 text-white px-16 py-4 my-4 rounded hover:bg-purple-800 transition duration-200"
           onClick={handleUpdate}
+          disabled={runUpdate}
+          aria-busy={runUpdate} 
         >
-          Update Post
+          <span>{runUpdate ? 'Updating...' : 'Update Post'}</span>
         </button>
 
         {updateSuccess && <p className="text-green-600">{updateSuccess}</p>}

@@ -9,6 +9,7 @@ import { BiSolidLike } from 'react-icons/bi';
 import AuthPopup from '../../components/AuthPopup';
 import FailurePopup from '../../components/FailurePopup';
 import OwnCommentTile from '../../components/OwnCommentTile';
+import { PiSpinnerGapBold } from 'react-icons/pi';
 
 const PostDetailPage = () => {
   const { id } = useParams();
@@ -27,6 +28,7 @@ const PostDetailPage = () => {
 
   const [ownComments, setOwnComments] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [submittingComment, setSubmittingComment] = useState(false);
 
   const authToken = localStorage.getItem('token');
 
@@ -114,6 +116,8 @@ const PostDetailPage = () => {
       return;
     }
 
+    setSubmittingComment(true);
+
     try {
       const response = await axios.post(`http://127.0.0.1:8000/api/comments`, {
         blog_post_id: id,
@@ -130,6 +134,8 @@ const PostDetailPage = () => {
       const errorMessage = error.response?.data?.message || error.message || 'Comment submit failed';
       console.log('Comment Submit Failed', error.response?.data || error.message);
       toast.error(`Comment submit failed: ${errorMessage}`);
+    } finally {
+      setSubmittingComment(false);
     }
   };
 
@@ -180,7 +186,18 @@ const PostDetailPage = () => {
       : ''; 
   };
 
-  if (!post) return <div className="p-6">Loading...</div>;
+  if (!post) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 space-y-4">
+        <svg className="animate-spin h-10 w-10 text-purple-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <PiSpinnerGapBold size={24}/>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        <p className="text-gray-600 font-medium">Fetching post details…</p>
+      </div>
+    );
+  }
+
 
   return (
     <>
@@ -259,6 +276,7 @@ const PostDetailPage = () => {
           <button
             onClick={handleCommentSubmit}
             className="px-6 py-2 text-white rounded bg-purple-900 hover:bg-purple-800"
+            disabled={submittingComment}
           >
             Publish Comment
           </button>

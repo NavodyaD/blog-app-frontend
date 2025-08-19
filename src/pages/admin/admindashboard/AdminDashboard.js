@@ -33,6 +33,9 @@ const AdminDashboard = () => {
   const [deleteEmail, setDeleteEmail] = useState("");
   const [deleteKey, setDeleteKey] = useState("");
 
+  // control disable
+  const [publishingId, setPublishingId] = useState(null);
+
   const navigate = useNavigate();
   const authToken = localStorage.getItem('token');
 
@@ -81,16 +84,22 @@ const AdminDashboard = () => {
     imagePath ? `http://127.0.0.1:8000/storage/${imagePath}` : '';
 
   const onPublishPost = async (id) => {
+    if (publishingId) return;
+    setPublishingId(id);
     try {
-      await axios.patch(`http://127.0.0.1:8000/api/posts/${id}/approve`, {}, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
+      await axios.patch(
+        `http://127.0.0.1:8000/api/posts/${id}/approve`,
+        {},
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
 
       toast.success('Post published!');
       fetchPendingPosts();
       fetchPublishedPosts(currentPage);
     } catch (err) {
       toast.error('Failed to publish post.');
+    } finally {
+      setPublishingId(null);
     }
   };
 
@@ -284,7 +293,7 @@ const AdminDashboard = () => {
           <div className="bg-white border border-gray-300 rounded-lg p-5 shadow-sm">
             <h3 className="text-lg font-semibold mb-4">Current Admins</h3>
             <ul>
-              {admins.map((admin) => (
+              {admins?.data?.map((admin) => (
                 <li key={admin.email} className="flex items-center border border-gray-300 rounded px-2 py-1 mb-3">
                   <FaUserShield className="text-gray-700 mr-2" />
                   <div>
@@ -407,8 +416,8 @@ const AdminDashboard = () => {
             {pendingPosts?.data?.length === 0 ? (
               <p className="text-gray-500">No pending posts.</p>
             ) : (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {pendingPosts.map((post) => (
+              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {pendingPosts?.data?.map((post) => (
                   <AdminBlogPostTile
                     key={post.id}
                     image={getImageUrl(post.cover_image)}
@@ -417,6 +426,7 @@ const AdminDashboard = () => {
                     author={post.user?.name || 'Unknown'}
                     postState={post.post_status}
                     onPublish={() => onPublishPost(post.id)}
+                    publishDisabled={publishingId === post.id}
                     onDelete={() => setConfirmDialog({ open: true, postId: post.id })}
                     onClick={() => onPostClick(post.id)}
                   />
@@ -477,7 +487,6 @@ const AdminDashboard = () => {
           setConfirmDialog({ open: false, postId: null });
         }}
       />
-
       <Footer />
     </>
   );

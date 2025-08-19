@@ -10,6 +10,7 @@ const AdminBlogPostTile = ({
   onPublish,
   onDelete,
   onClick,
+  publishDisabled,
 }) => {
   const getPreview = (text, wordLimit = 20) => {
     const words = text.split(' ');
@@ -17,7 +18,7 @@ const AdminBlogPostTile = ({
   };
 
   return (
-    <div className="bg-white border rounded shadow-sm md:w-[350px] w-full flex flex-col hover:shadow-lg transition">
+    <div className="bg-white border rounded shadow-sm md:w-full w-full flex flex-col hover:shadow-lg transition">
       <div className="w-full h-[180px] cursor-pointer" onClick={onClick}>
         <img
           src={image}
@@ -39,10 +40,14 @@ const AdminBlogPostTile = ({
       <div className="flex justify-between items-center px-4 pb-4 gap-2">
         <button
           onClick={onPublish}
-          className="flex items-center gap-2 px-3 py-1 text-sm border border-green-600 text-green-700 hover:bg-green-600 hover:text-white rounded transition"
+          disabled={publishDisabled}
+          className={`flex items-center gap-2 px-3 py-1 text-sm border rounded transition
+            ${publishDisabled 
+              ? 'border-gray-400 text-gray-400 cursor-not-allowed bg-gray-100' 
+              : 'border-green-600 text-green-700 hover:bg-green-600 hover:text-white'}`}
         >
           <FaCheckCircle size={14} />
-          Approve
+          {publishDisabled ? 'Publishing…' : 'Approve'}
         </button>
         <button
           onClick={onDelete}

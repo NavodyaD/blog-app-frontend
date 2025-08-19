@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Modal from 'react-modal';
@@ -12,6 +12,8 @@ const SignUp = () => {
   const [role, setRole] = useState('writer');
   const [showAdminKeyModal, setShowAdminKeyModal] = useState(false);
   const [adminKeyInput, setAdminKeyInput] = useState('');
+  const [runSignup, setRunSignup] = useState(false);
+  const signingRef = useRef(false);
   const ADMIN_SECRET_KEY = '7878';
 
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const SignUp = () => {
     Modal.setAppElement('#root');
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
+    
     if (token && role) {
       if (role === 'writer') {
         navigate('/writer-dashboard');
@@ -31,6 +34,12 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (signingRef.current) return;
+    signingRef.current = true;
+
+    setRunSignup(true);
+
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/register', {
         name,
@@ -38,18 +47,25 @@ const SignUp = () => {
         password,
         role,
       });
-      const { token, role: userRole } = response.data;
+
+      const { token, role: userRole } = response.data.data;
+
       localStorage.setItem('token', token);
       localStorage.setItem('role', userRole);
+
       if (userRole === 'writer') {
         navigate('/writer-dashboard');
       } else if (userRole === 'admin') {
         navigate('/admin-dashboard');
       }
+
       toast.success('Signup Successful!');
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || 'Signup failed';
       toast.error(`Signup Failed: ${errorMessage}`);
+    } finally {
+      signingRef.current = false;
+      setRunSignup(false);
     }
   };
 
@@ -148,6 +164,7 @@ const SignUp = () => {
             <button
               type="submit"
               className="w-full bg-purple-900 text-white py-2 rounded hover:bg-purple-800 transition duration-200"
+              disabled={runSignup}
             >
               Create Account
             </button>

@@ -161,12 +161,12 @@ const HomePage = () => {
     </div>
     <div className="bg-white py-6 md:px-24 px-4 bg-gray-50 justify-around min-h-screen">
 
-      <EngagingPostsSection />
+    <EngagingPostsSection />
 
-      <div className="mb-10 text-center">
-        <h1 className="md:text-4xl text-2xl font-bold text-gray-800 mb-2">Explore Blog Posts</h1>
-        <p className="md:text-lg text-md text-gray-600">Read the latest insights, stories, and news</p>
-      </div>
+    <div className="mb-10 text-center">
+      <h1 className="md:text-4xl text-2xl font-bold text-gray-800 mb-2">Explore Blog Posts</h1>
+      <p className="md:text-lg text-md text-gray-600">Read the latest insights, stories, and news</p>
+    </div>
 
     <div className="flex flex-col sm:flex-row items-center justify-center mb-6 gap-4 w-full">
       <input

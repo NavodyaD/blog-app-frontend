@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,6 +11,9 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const [runLogin, setRunLogin] = useState(false);
+    const loginRef = useRef(false);
 
     const navigate = useNavigate();
 
@@ -30,6 +33,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (loginRef.current) return;
+        loginRef.current = true;
+
+        setRunLogin(true);
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/login', {
                 email,
@@ -56,6 +63,9 @@ const Login = () => {
             console.log('Login Failed', err.response?.data || err.message);
             setError(errorMessage);
             setIsPopupOpen(true);
+        } finally {
+            loginRef.current = false;
+            setRunLogin(false);
         }
     }
 
@@ -109,6 +119,8 @@ const Login = () => {
                         <button
                             type="submit"
                             className="flex justify-center items-center gap-3 w-full bg-purple-900 text-white py-2 rounded hover:bg-purple-800 transition duration-200"
+                            disabled={runLogin}
+                            aria-busy={runLogin}
                         >
                             <FiLogIn size={18} />
                             <span className="whitespace-nowrap">Login</span>
